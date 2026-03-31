@@ -1,0 +1,6 @@
+Locked PE final model manifest and QC
+Created: 29 Mar 2026 18:57:12
+Locked analysis dataset: /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/output/91_locked_analysis_file_final_pe.dta
+Manifest CSV: /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/tables/92_manifest_files.csv
+QC CSV: /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/tables/92_qc_required_vars.csv
+Participant flow CSV: /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/tables/92_participant_flow.csv

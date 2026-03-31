@@ -1,0 +1,281 @@
+Pulmonary Embolism Locked Project
+Project-State Reconciliation Memo
+Created: 2026-03-26
+
+Update: 2026-03-27
+- The March 23, 2026 candidate-additions run is now available and materially clarifies the locked decision on discharge-model candidate variables.
+- Newly reviewed result:
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/output/23b_candidate_additions_bestproc_23Mar2026_201533.csv
+
+Purpose
+- Summarize current project understanding using the manuscript scaffold, supplement, calculator, saved tables, saved outputs, and recent logs.
+- Separate well-supported facts from conflicting or stale artifacts.
+- Define what the currently running final M6 Stata job needs to resolve before the locked pipeline is finalized.
+
+Materials reviewed
+- Parent project state:
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/PROJECT_STATE.md
+- Manuscript scaffold:
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Manuscript Creation/PE_Manuscript_Draft_v4_Chest_2026-03-23.docx
+- Supplement scaffold:
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Manuscript Creation/Supplemental_Material_2026-03-25.docx
+- Calculator appendix scaffold:
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Manuscript Creation/eAppendix_Calculator_2026-03-23.docx
+- Calculator UI:
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/PE_Risk_Calculator_NSQIP_v2.html
+- Saved outputs and tables:
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/output/23b_candidate_additions_bestproc_23Mar2026_201533.csv
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/output/25b_auc_M0_vs_M1.csv
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/output/25c_M1_vs_M2_comparison.csv
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/output/22_readm_sensitivity_summary_2024_10Mar2026_175617.csv
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/output/13_NNT_by_threshold_2024.csv
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/tables/03_performance_2024_summary.csv
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/tables/08_bootstrap_internal_validation_optimism.csv
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/tables/09_bootstrap_shrinkage_recalibration.csv
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/tables/10_decision_curve_2024.csv
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/tables/14_threshold_operational_summary_2024.csv
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/tables/15_calibration_groups_both_2024.csv
+- Relevant logs:
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/log/25b_auc_M0_M1_20260321_094534.log
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/log/25c_compare_M1_M2_20260321_125537.log
+
+Workspace and access status
+- The locked workspace is now scaffolded at:
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked
+- Local project instruction/config files now exist:
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/AGENTS.md
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/.codex/config.toml
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/tmp/error_patterns.md
+- The full numbered locked do-file set exists under:
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/do/final_model
+- Stata is not installed in this Codex environment, so code can be written and statically audited here, but not executed here.
+- Parent project logs, outputs, manuscript drafts, supplement drafts, figures, and calculator files are directly readable.
+
+Current best-supported facts
+- Cohort frame appears stable across manuscript and supplement:
+  - Total cohort: 4,856,597
+  - Development: 2020-2023, 3,893,032
+  - Raw temporal validation: 2024, 963,565
+- The strongest currently supported complete-case validation numbers are from:
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/tables/03_performance_2024_summary.csv
+- Those values are:
+  - Complete-case validation N = 936,327
+  - Complete-case PE events = 3,131
+  - DISCHARGE AUC = 0.7953309061
+  - UPDATE AUC = 0.8874075662
+  - DISCHARGE Brier = 0.0033103363
+  - UPDATE Brier = 0.0032941665
+  - DISCHARGE calibration intercept = 0.1625518253
+  - DISCHARGE calibration slope = 1.0264330659
+  - UPDATE calibration intercept = -0.0413901052
+  - UPDATE calibration slope = 0.9872536749
+- Bootstrap shrinkage/recalibration values are supported by:
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/tables/08_bootstrap_internal_validation_optimism.csv
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/tables/09_bootstrap_shrinkage_recalibration.csv
+- Those values are:
+  - DISCHARGE shrinkage = 0.9979405661
+  - DISCHARGE recalibration intercept = -0.0110621937
+  - UPDATE shrinkage = 0.9996395106
+  - UPDATE recalibration intercept = -0.0022694936
+- Threshold operating characteristics are supported by:
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/tables/14_threshold_operational_summary_2024.csv
+- The manuscript’s threshold claims match the table well:
+  - DISCHARGE at 1.0%:
+    - flagged 8.833%
+    - sensitivity 44.459%
+    - PPV 1.683%
+  - UPDATE at 1.0%:
+    - flagged 5.200%
+    - sensitivity 49.888%
+    - PPV 3.208%
+- Tautology sensitivity values are supported by:
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/output/22_readm_sensitivity_summary_2024_10Mar2026_175617.csv
+- Those values are:
+  - S0 = 0.8877520347
+  - S1 = 0.8197105519
+  - S2 = 0.8152637098
+  - S3 = 0.8147004902
+- Candidate-variable testing already strongly supports exclusion of sex and steroid:
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/output/23b_candidate_additions_bestproc_23Mar2026_201533.csv
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/output/25b_auc_M0_vs_M1.csv
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/output/25c_M1_vs_M2_comparison.csv
+- Those values are:
+  - Sex delta AUC = 0.0000021276
+  - Steroid delta AUC = 0.0000107864
+- The March 23 candidate-additions run extends that conclusion to hxchf and dialysis on the linear PROC_BEST backbone:
+  - M0 base+bestproc AUC = 0.8103657714
+  - M5 base+bestproc+sex3+steroid+hxchf AUC = 0.8104675767
+  - M6 base+bestproc+sex3+steroid+hxchf+dial AUC = 0.8102481908
+  - Best candidate gain over M0 = 0.0001018053
+  - Interpretation: candidate additions change validation discrimination trivially and do not justify retention in the locked final discharge model under a parsimony-first lock decision.
+- The manuscript, supplement, and PROJECT_STATE all agree on the high-level conceptual architecture:
+  - DISCHARGE model at hospital discharge
+  - UPDATE model triggered by readmission/reoperation sentinel events
+  - Predictor inclusion should be based on out-of-sample discrimination and calibration, not p-values alone
+
+Major conflicts that still need resolution
+
+1. Final discharge backbone conflict
+- Manuscript and supplement currently describe the final discharge backbone as M6:
+  - spline wRVU + CPT-3 pooled categories
+- PROJECT_STATE also says the locked discharge set is:
+  - workrvu_clean (spline) + cpt3_pool
+- But saved candidate-testing logs and files on 2026-03-21 are built on "PROC_BEST" with:
+  - linear workrvu_clean + cpt3_pool
+- This means the current manuscript narrative and at least some saved model artifacts are not yet guaranteed to refer to the same exact discharge specification.
+- The March 23 "M6" candidate-additions run does not resolve this conflict because it is a different M6:
+  - linear PROC_BEST backbone plus candidate variables
+  - not the manuscript-style spline M6 final discharge specification
+
+2. Procedure-signal output conflict
+- The file:
+  - /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/output/21_proc_signal_compare_2024_RESUMED.csv
+  reports AUC values around 0.498 to 0.500 for all models.
+- Those values are incompatible with:
+  - manuscript claims
+  - supplement eTable 5
+  - PROJECT_STATE
+  - saved sex/steroid comparison outputs
+- Interpretation:
+  - this file is stale, broken, or based on a flawed evaluation path and should not be treated as source-of-truth for final manuscript numbers.
+
+3. Validation denominator conflict
+- Different artifacts currently use three different 2024 denominators:
+  - 963,565 = raw 2024 temporal validation cohort
+  - 956,434 = candidate-testing / prediction-merge cohort in 25b and 25c
+  - 936,327 = complete-case cohort in final QC/performance tables and manuscript
+- This is one of the most important unresolved project-state items.
+- For the locked pipeline, every comparison and every manuscript number must map explicitly to one of these cohorts, with a documented reason.
+
+4. Modeling-method wording conflict
+- Manuscript says:
+  - "regularized logistic regression"
+- Existing Stata scripts and logs reviewed here show:
+  - standard logistic regression via logit/logistic
+- Unless a separate regularized modeling step exists elsewhere and is the true final source, the manuscript wording likely needs revision to ordinary logistic regression.
+
+5. Stata-version conflict
+- Manuscript says analyses were conducted using Stata 18.
+- Locked project instruction requires Stata 19.5.
+- This is not a scientific conflict, but it is a methods/reporting conflict that should be harmonized at release.
+
+6. Spline specification conflict
+- Supplement/eAppendix describe:
+  - restricted cubic spline with 5 knots
+  - knots at 5th, 27.5th, 50th, 72.5th, 95th percentiles
+- Older do-files reviewed in the parent project often build spline terms using:
+  - centile 25, 50, 75
+  - mkspline with 4 basis terms
+- This needs to be resolved by the final M6 run and then propagated consistently into:
+  - manuscript methods
+  - supplement methods
+  - calculator appendix
+  - calculator code
+  - locked pipeline scripts
+
+7. CPT pooling threshold conflict
+- Supplement section B says:
+  - pool CPT-3 families with fewer than 5,000 training cases
+- Multiple parent do-files use:
+  - POOLN = 20,000
+- eAppendix also refers to 41 families meeting a 20,000-case threshold.
+- This threshold must be locked once and then made consistent everywhere.
+
+8. Sex-level labeling conflict
+- PROJECT_STATE says:
+  - sex3 level 3 = male, coefficient about 0.671
+  - sex3 level 2 = unknown/other, coefficient about -0.049
+- The displayed 25c model output shows:
+  - "male" coefficient about -0.046
+  - "other/unknown" coefficient about 0.669
+- This suggests either:
+  - label inversion
+  - recoding inconsistency
+  - or documentation error
+- This matters because the project’s main conclusion is that sex was excluded for lack of predictive gain; the substantive conclusion is probably unchanged, but the table narrative and coefficient labeling must be corrected.
+
+9. Calculator conflict
+- Current calculator UI advertises:
+  - DISCHARGE: base+PROC_BEST (AUC 0.811)
+  - UPDATE: base+major+sentinel (AUC 0.888)
+- This does not align with the manuscript scaffold, which currently says:
+  - DISCHARGE 0.795
+  - UPDATE 0.887
+- The calculator appendix also still has major placeholders for:
+  - final coefficients
+  - spline knots
+  - CPT family coefficient table
+  - exact sentinel-event values
+- Therefore the calculator is still a development scaffold, not yet a release-grade reflection of the manuscript.
+
+What appears most trustworthy right now
+- Highest trust for current manuscript-facing performance:
+  - tables/03_performance_2024_summary.csv
+  - tables/08_bootstrap_internal_validation_optimism.csv
+  - tables/09_bootstrap_shrinkage_recalibration.csv
+  - tables/14_threshold_operational_summary_2024.csv
+  - output/22_readm_sensitivity_summary_2024_10Mar2026_175617.csv
+- Highest trust for candidate-variable exclusion:
+  - output/23b_candidate_additions_bestproc_23Mar2026_201533.csv
+  - output/25b_auc_M0_vs_M1.csv
+  - output/25c_M1_vs_M2_comparison.csv
+  - corresponding logs 25b and 25c
+- Working locked interpretation for discharge candidate additions:
+  - sex, steroid, hxchf, and dialysis were all examined
+  - none provide a validation AUC gain of 0.001 or greater over M0 base+bestproc
+  - M5 is the best enriched candidate on the March 23 run, but its gain is trivial
+  - dialysis worsens AUC in both M4 and M6
+  - therefore these additions should be treated as tested-but-not-retained in the locked final discharge model
+- Lower trust / treat as stale until proven otherwise:
+  - output/21_proc_signal_compare_2024_RESUMED.csv
+  - calculator UI model-hash/performance banner
+  - any manuscript text that depends on unresolved M6 details not yet linked to a final saved output
+
+Current best project understanding
+- The project has already crossed the "is there a promising model?" threshold.
+- The remaining problem is a lock-and-reconcile problem, not a discovery problem.
+- The scientific architecture appears stable:
+  - discharge risk model
+  - sentinel-event reassessment model
+  - threshold-based clinical interpretation
+- The main remaining technical task is to force one exact final model specification and one exact evaluation cohort definition through every downstream artifact.
+
+What the final-model reconciliation still needs to settle
+- Exact final discharge backbone:
+  - linear wRVU + CPT-3
+  - or spline wRVU + CPT-3
+- Exact 2024 validation denominator for final discharge model
+- Exact 2024 AUC for the final discharge backbone under the locked cohort definition
+- Exact spline knot locations and basis implementation, if M6 is retained
+- Exact pooled CPT family count and pooling threshold
+- Whether hxchf and dialysis add any meaningful discrimination after the final backbone is locked
+- Final coefficient vectors and intercepts for calculator deployment
+
+Recommended source-of-truth hierarchy going forward
+1. Final locked Stata outputs generated from the completed M6/final-model run
+2. Direct logs tied to those outputs
+3. Locked pipeline outputs generated under /Locked
+4. Manuscript, supplement, and calculator text updated from those locked outputs
+5. Older exploratory outputs only as historical context, not as final truth
+
+Immediate next actions after the March 23 candidate-additions reconciliation
+- Capture the final spline-backbone M6 run log and all generated output files, if that run is distinct from the March 23 linear PROC_BEST candidate-additions run.
+- Compare final M6 discharge AUC and cohort N against:
+  - tables/03_performance_2024_summary.csv
+  - output/23b_candidate_additions_bestproc_23Mar2026_201533.csv
+  - output/25b_auc_M0_vs_M1.csv
+  - manuscript methods/results text
+- Lock the exact final discharge and update formulas.
+- Update the locked pipeline scripts so:
+  - 93 defines the procedure backbone comparison clearly
+  - 94 handles candidate additions against the locked backbone
+  - 96 and 97 export the true final coefficient sets
+  - 106 exports the calculator-ready coefficients and knot metadata
+- Then reconcile manuscript, supplement, and calculator copy to the final locked outputs.
+
+Bottom line
+- The project direction is now clear.
+- The central unresolved issue is not whether the model works; it is which exact final specification and cohort definition will serve as the single release-grade source of truth.
+- The running M6 job is the key remaining bridge between the current manuscript scaffold and a fully locked reproducible pipeline.
+- The March 23 candidate-additions results reduce one major uncertainty:
+  - the added discharge covariates should not be retained unless a distinct final spline-backbone run shows materially different behavior.

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator Validation Runner</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 24px; background: #f5f8fb; color: #233; }
+    h1 { font-size: 24px; margin-bottom: 8px; }
+    .summary { background: white; border-radius: 10px; padding: 16px 18px; margin-bottom: 18px; border: 1px solid #d8e3ec; }
+    .pass { color: #116b34; font-weight: 700; }
+    .fail { color: #a1232d; font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; background: white; border: 1px solid #d8e3ec; }
+    th, td { padding: 8px 10px; border-bottom: 1px solid #e5edf4; text-align: left; font-size: 13px; }
+    th { background: #eef5fb; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+    iframe { width: 1px; height: 1px; border: 0; position: absolute; left: -9999px; top: -9999px; }
+  </style>
+</head>
+<body>
+  <h1>PE Calculator v3 Validation</h1>
+  <div class="summary" id="summary">Waiting for calculator load...</div>
+  <table id="results">
+    <thead>
+      <tr>
+        <th>Case</th>
+        <th>Mode</th>
+        <th>Expected</th>
+        <th>Actual</th>
+        <th>Max Abs Diff</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <iframe id="calc-frame" src="./PE_Risk_Calculator_NSQIP_v3.html"></iframe>
+  <script src="./PE_Risk_Calculator_NSQIP_v3_validation_cases.js"></script>
+  <script>
+    const TOL = 1e-10;
+
+    function setField(doc, id, value) {
+      const el = doc.getElementById(id);
+      if (!el) throw new Error(`Missing field: ${id}`);
+      el.value = String(value);
+    }
+
+    function applyCase(win, c) {
+      const doc = win.document;
+      if (c.mode === 'discharge') {
+        setField(doc, 'dis-age', c.age);
+        setField(doc, 'dis-bmi', c.bmi);
+        setField(doc, 'dis-asa', c.asa);
+        setField(doc, 'dis-cancer', c.cancer);
+        setField(doc, 'dis-optime', c.optime);
+        setField(doc, 'dis-los', c.los);
+        setField(doc, 'dis-inout', c.inout);
+        doc.getElementById('dis-cpt').value = c.cpt;
+        const info = win.lookupCPT(c.cpt);
+        win.fillCPT('dis', c.cpt, info);
+        return win.calcDischarge();
+      }
+
+      setField(doc, 'upd-age', c.age);
+      setField(doc, 'upd-bmi', c.bmi);
+      setField(doc, 'upd-asa', c.asa);
+      setField(doc, 'upd-cancer', c.cancer);
+      setField(doc, 'upd-optime', c.optime);
+      setField(doc, 'upd-los', c.los);
+      setField(doc, 'upd-inout', c.inout);
+      setField(doc, 'upd-readm', c.readm);
+      setField(doc, 'upd-reop', c.reop);
+      doc.getElementById('upd-cpt').value = c.cpt;
+      const info = win.lookupCPT(c.cpt);
+      win.fillCPT('upd', c.cpt, info);
+      return win.calcUpdate();
+    }
+
+    function fmt(x) {
+      return Number(x).toFixed(12);
+    }
+
+    function renderRow(tbody, c, actual, diffs, ok) {
+      const tr = document.createElement('tr');
+      const expected = c.mode === 'discharge'
+        ? `PE ${fmt(c.expected_pe)} | DVT ${fmt(c.expected_dvt)} | VTE ${fmt(c.expected_vte)}`
+        : `PE ${fmt(c.expected_pe)}`;
+      const actualTxt = c.mode === 'discharge'
+        ? `PE ${fmt(actual.peProb)} | DVT ${fmt(actual.dvtProb)} | VTE ${fmt(actual.vteProb)}`
+        : `PE ${fmt(actual.prob)}`;
+      const maxDiff = Math.max(...diffs);
+      tr.innerHTML = `
+        <td><code>${c.id}</code></td>
+        <td>${c.mode}</td>
+        <td><code>${expected}</code></td>
+        <td><code>${actualTxt}</code></td>
+        <td><code>${maxDiff.toExponential(2)}</code></td>
+        <td class="${ok ? 'pass' : 'fail'}">${ok ? 'PASS' : 'FAIL'}</td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    function runValidation() {
+      const frame = document.getElementById('calc-frame');
+      const win = frame.contentWindow;
+      const tbody = document.querySelector('#results tbody');
+      let failures = 0;
+      let worst = 0;
+
+      VALIDATION_CASES.forEach(c => {
+        const actual = applyCase(win, c);
+        let diffs;
+        if (c.mode === 'discharge') {
+          diffs = [
+            Math.abs(actual.peProb - c.expected_pe),
+            Math.abs(actual.dvtProb - c.expected_dvt),
+            Math.abs(actual.vteProb - c.expected_vte)
+          ];
+        } else {
+          diffs = [Math.abs(actual.prob - c.expected_pe)];
+        }
+        const ok = diffs.every(d => d <= TOL);
+        if (!ok) failures += 1;
+        worst = Math.max(worst, ...diffs);
+        renderRow(tbody, c, actual, diffs, ok);
+      });
+
+      const summary = document.getElementById('summary');
+      if (failures === 0) {
+        summary.innerHTML = `<span class="pass">PASS</span> ${VALIDATION_CASES.length} of ${VALIDATION_CASES.length} cases matched the locked reference outputs. Worst absolute difference: <code>${worst.toExponential(3)}</code>.`;
+        document.title = 'PASS - Calculator Validation';
+      } else {
+        summary.innerHTML = `<span class="fail">FAIL</span> ${failures} cases differed from the locked reference outputs. Worst absolute difference: <code>${worst.toExponential(3)}</code>.`;
+        document.title = 'FAIL - Calculator Validation';
+      }
+    }
+
+    window.addEventListener('load', () => {
+      const frame = document.getElementById('calc-frame');
+      const frameDoc = frame.contentWindow && frame.contentWindow.document;
+      if (frameDoc && frameDoc.readyState === 'complete') {
+        runValidation();
+      } else {
+        frame.addEventListener('load', runValidation, { once: true });
+      }
+    });
+  </script>
+</body>
+</html>

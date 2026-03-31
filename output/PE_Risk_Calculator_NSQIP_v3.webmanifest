@@ -1,0 +1,9 @@
+{
+  "name": "Postoperative VTE Risk Calculator",
+  "short_name": "VTE Risk Calc",
+  "description": "Locked ACS-NSQIP bedside calculator for discharge PE, DVT, VTE, and post-discharge PE update risk.",
+  "start_url": "./PE_Risk_Calculator_NSQIP_v3.html",
+  "display": "standalone",
+  "background_color": "#f4f8fb",
+  "theme_color": "#004999"
+}

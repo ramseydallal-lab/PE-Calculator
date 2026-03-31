@@ -1,0 +1,11 @@
+Locked candidate additions summary
+Created: 28 Mar 2026 12:17:26
+Common training N:    3,864,605
+Common validation N:      956,434
+Validation PE events:        3,413
+Best AUC model(s): 
+Best AUC:  0.810813
+M0 AUC:  0.810707
+Best minus M0 AUC delta:  0.000106
+Locked choice: M0_base+bestproc
+Decision rule: retain parsimonious M0 because best candidate AUC gain over M0 is less than 0.001

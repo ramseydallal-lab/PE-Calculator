@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Locked PE Methods Draft</title>
+  <style>
+    body { font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.35; margin: 1in; }
+    h1 { font-size: 18pt; margin-bottom: 0.2in; }
+    h2 { font-size: 14pt; margin-top: 0.3in; margin-bottom: 0.1in; }
+    h3 { font-size: 12pt; margin-top: 0.2in; margin-bottom: 0.05in; }
+    p { margin: 0 0 0.12in 0; }
+    ul { margin-top: 0.05in; margin-bottom: 0.12in; }
+  </style>
+</head>
+<body>
+<h1>Locked Pulmonary Embolism Project: Manuscript and Supplemental Methods Draft</h1>
+
+<p><strong>Date:</strong> March 28, 2026</p>
+<p><strong>Purpose:</strong> This document memorializes the current locked analytic methodology for the postoperative pulmonary embolism project, including manuscript-ready Methods text, a more detailed Supplemental Methods draft, and implementation notes relevant to the locked production pipeline.</p>
+
+<h2>Main Manuscript Methods Draft</h2>
+
+<h3>Study design and data source</h3>
+<p>We performed a retrospective cohort study using the American College of Surgeons National Surgical Quality Improvement Program (ACS-NSQIP) Participant Use Files from 2020 through 2024. The source cohort contained 4,856,597 operations. Data were temporally partitioned into a development cohort comprising 2020 through 2023 cases and a held-out temporal validation cohort comprising 2024 cases. All analyses were conducted within a locked production pipeline using Stata 19.5 with deterministic preprocessing and fixed model specifications.</p>
+
+<h3>Outcome definition</h3>
+<p>The primary outcome was 30-day postoperative pulmonary embolism (PE), represented in the locked analysis file as a binary outcome variable. To address reviewer concerns regarding the broader thromboembolic phenotype, the locked pipeline also derives secondary postoperative deep vein thrombosis (DVT) and composite venous thromboembolism (VTE) outcomes. The DVT outcome is represented as <code>dvt_postop</code>, and the composite VTE outcome is represented as <code>vte_composite</code>. These secondary outcomes are reserved for supplementary descriptive and secondary predictive analyses rather than the primary manuscript endpoint.</p>
+
+<h3>Predictor handling and coding</h3>
+<p>The discharge model was defined a priori around clinically interpretable perioperative predictors available by the time of hospital discharge: age category, body mass index category, disseminated cancer, operative time category, length of stay category, American Society of Anesthesiologists class, functional status, inpatient versus outpatient status, and procedure-related signal. Procedure signal was modeled using work relative value unit (wRVU) spline basis terms together with pooled 3-digit Current Procedural Terminology (CPT-3) families. Candidate additions including sex, chronic steroid use, congestive heart failure, and chronic dialysis were evaluated only after the procedure backbone was locked. The update model used the same locked discharge predictors and additionally included timing-bin indicators for postoperative readmission and reoperation sentinel events.</p>
+
+<h3>Locked analytic dataset construction</h3>
+<p>A locked analysis file was created from the analysis-ready source dataset with deterministic derivation of all required modeling variables, spline basis terms, pooled CPT-3 categories, sentinel event timing bins, and secondary DVT/VTE outcomes. The build step preferentially reused already encoded or derived variables when present and saved a stable analysis dataset for downstream reuse to avoid repeated computation on the full cohort. Required-variable quality control was then performed on the locked analysis file, including explicit checks for outcome availability, predictor completeness, and the presence of all variables required by the final discharge and update models.</p>
+
+<h3>Model development strategy</h3>
+<p>Model development followed a staged, lock-down strategy rather than unconstrained iterative search. First, multiple prespecified procedure-backbone representations were compared on an identical complete-case development and temporal validation sample. These backbone models contrasted binary major-procedure coding, linear wRVU, spline-based wRVU, and combinations of these approaches with pooled CPT-3 categories. The selected backbone was then carried forward into candidate-addition testing, in which sex, steroid use, congestive heart failure, and dialysis were added in prespecified combinations. Candidate retention was based on out-of-sample performance and parsimony rather than on coefficient p values alone.</p>
+
+<h3>Final locked models</h3>
+<p>The final locked discharge model was fit by logistic regression in the 2020 through 2023 complete-case training cohort using the selected spline wRVU plus pooled CPT-3 backbone together with the locked perioperative predictor set. The final locked update model was fit by logistic regression using the same perioperative predictors plus readmission and reoperation timing categories. Both models were then applied without refitting to the 2024 temporal validation cohort. The locked pipeline saved fitted model artifacts, 2024 prediction files, coefficient exports, and validation-performance tables for both models.</p>
+
+<h3>Validation design and performance assessment</h3>
+<p>Validation was strictly temporal. No 2024 data were used for model fitting, backbone selection, or candidate-addition decisions. For each model comparison, the locked pipeline enforced an identical validation cohort and, where applicable, an identical complete-case sample between parent and comparison models. Primary performance metrics were area under the receiver operating characteristic curve, Brier score, log loss, calibration intercept, and calibration slope. Additional threshold-based operating characteristics were prespecified for clinically interpretable decision thresholds and exported from the validation prediction files.</p>
+
+<h3>Ablation and secondary analyses</h3>
+<p>An ablation analysis compared the full locked discharge model with a reduced version excluding functional status while preserving the same complete-case development and validation sample and the same procedure backbone. Secondary reviewer-facing analyses were prespecified for postoperative DVT and composite VTE, reusing the locked discharge predictor set and the same temporal split. These supplementary analyses include annual DVT/VTE incidence, PE-DVT overlap in 2024, and secondary discharge-model performance for DVT-only and composite VTE outcomes.</p>
+
+<h3>Missing data and subgroup analyses</h3>
+<p>The locked reporting pipeline includes a missing-data sensitivity module that contrasts scorable and nonscorable cohorts for the discharge and update models and exports variable-level missingness summaries. A subgroup calibration module evaluates model performance within prespecified validation subgroups, including age category, sex, and inpatient versus outpatient status, using the locked 2024 prediction files.</p>
+
+<h3>Threshold utility, figures, and manuscript tables</h3>
+<p>Downstream locked scripts generate threshold operating characteristics for both models, top-risk capture summaries, discrimination and calibration figures, and manuscript-facing tables assembled programmatically from the locked model outputs. This structure avoids hand transcription of manuscript values and keeps tables, figures, and supplementary materials synchronized with the locked analysis artifacts.</p>
+
+<h3>Calculator artifact generation</h3>
+<p>The locked pipeline also includes a calculator-export step that writes discharge and update coefficient tables, spline-knot metadata, and pooled CPT-3 level metadata for later application development. This export layer is intended to support a future clinical calculator while maintaining a strict separation between manuscript-facing statistical outputs and application-facing implementation artifacts.</p>
+
+<h3>Statistical software and reporting framework</h3>
+<p>All locked analyses are being implemented in Stata 19.5. The manuscript and supplementary materials are being prepared to align with Transparent Reporting of a Multivariable Prediction Model for Individual Prognosis or Diagnosis (TRIPOD) expectations, with explicit reporting of cohort construction, predictor coding, missing-data handling, model specification, validation design, and performance assessment.</p>
+
+<h2>Supplemental Methods Draft</h2>
+
+<h3>1. Source cohort and temporal split</h3>
+<p>The full source cohort included 4,856,597 cases spanning calendar years 2020 through 2024. Annual cohort sizes and event counts were preserved in the locked analysis build summary. Development was restricted to 2020 through 2023 cases, and temporal validation was restricted to 2024 cases. The locked build summary currently shows the raw 2024 cohort size and annual PE, DVT, and VTE event totals before model-specific complete-case restrictions are applied.</p>
+
+<h3>2. Locked analysis-file engineering</h3>
+<p>The locked analysis file is the central reusable dataset for all downstream modeling and reporting scripts. It contains the primary PE outcome, derived DVT and VTE outcomes, temporal split flags, row-level identifiers, perioperative predictor categories, spline basis terms for wRVU, pooled CPT-3 categories, and sentinel-event timing variables for the update model. The build process was designed to avoid recomputing expensive variables when equivalent derived fields were already present in the source analysis dataset. The output of this step is a saved analysis file used by all numbered downstream scripts.</p>
+
+<h3>3. Procedure-backbone comparison</h3>
+<p>The locked backbone-comparison step evaluates prespecified procedure encodings on a common complete-case sample. The compared representations are: major-procedure indicator alone; linear wRVU alone; spline-based wRVU alone; major-procedure plus pooled CPT-3; linear wRVU plus pooled CPT-3; and spline-based wRVU plus pooled CPT-3. Each candidate is fit on the same 2020 through 2023 complete-case sample and scored on the same 2024 validation sample. Intermediate checkpoint files are written after each completed backbone so that interrupted runs can resume without rerunning all prior models.</p>
+
+<h3>4. Candidate-addition testing</h3>
+<p>After procedure signal lock-down, the locked pipeline evaluates sequential candidate augmentations to the discharge model using a shared complete-case sample. The tested candidate set includes sex, chronic steroid use, congestive heart failure, and chronic dialysis. The decision rule is explicitly parsimony-first: candidate terms are not retained unless they provide a materially meaningful gain in out-of-sample discrimination relative to the base locked discharge backbone. This rule is implemented in the locked production script and exported in a decision-summary text file.</p>
+
+<h3>5. Final discharge and update model fitting</h3>
+<p>The final discharge model is fit on the complete-case development cohort and scored on the complete-case 2024 validation cohort. The final update model uses the same perioperative predictor set plus readmission and reoperation timing indicators. Both scripts save the fitted Stata estimation result file, the 2024 prediction dataset, model coefficients, performance tables, and run metadata files containing the model spec tag and sample counts. Saved model and prediction artifacts are reused when metadata confirm that the current run matches the locked sample and specification.</p>
+
+<h3>6. Missing-data sensitivity analysis</h3>
+<p>The missing-data sensitivity module constructs model-specific scorable indicators for the discharge and update models based on explicit required-variable lists. It then tabulates annual counts of scorable and nonscorable cases, corresponding PE events, and outcome rates. A companion table quantifies variable-level missingness for the discharge and update predictor sets. This analysis is intended to support transparent reporting of complete-case restrictions and to document the practical impact of missingness on deployable model coverage.</p>
+
+<h3>7. Subgroup calibration and heterogeneity</h3>
+<p>The subgroup-calibration script merges the 2024 discharge and update prediction files back onto selected subgroup descriptors from the locked analysis file using the locked row identifier. It then computes subgroup-specific sample sizes, event counts, mean predicted risk, discrimination, Brier score, log loss, calibration intercept, and calibration slope for prespecified subgroups including age category, sex, and inpatient versus outpatient status.</p>
+
+<h3>8. Threshold utility analyses</h3>
+<p>The threshold-utility step computes operating characteristics for both models at prespecified risk thresholds. For each threshold, the script derives the number evaluated, number flagged, true positives, false positives, true negatives, false negatives, percentage flagged, sensitivity, specificity, positive predictive value, negative predictive value, and an NNT-like inverse PPV quantity. The script also computes event capture among the top 5%, 10%, and 20% of predicted-risk patients. These tables are intended to support manuscript threshold summaries and implementation discussions.</p>
+
+<h3>9. Figure generation</h3>
+<p>The figure-generation step uses the locked 2024 prediction files to create ROC and calibration plots for the discharge and update models. Calibration plots are generated from deciles of predicted risk by collapsing observed and mean predicted event rates within each risk decile and exporting programmatic figure files. Because the figures are generated directly from locked prediction datasets, figure values remain synchronized with the model outputs.</p>
+
+<h3>10. Descriptive and manuscript summary tables</h3>
+<p>The table-generation steps programmatically build descriptive baseline tables, combined model-performance tables, and manuscript-threshold tables from locked outputs rather than from hand-entered manuscript values. This includes PE versus no-PE descriptives, development versus validation cohort descriptives, and combined performance summaries for the discharge, update, and ablation models.</p>
+
+<h3>11. Secondary DVT and VTE analyses</h3>
+<p>The supplementary locked workflow includes reviewer-facing thromboembolic analyses beyond the primary PE endpoint. These analyses summarize annual postoperative DVT and composite VTE incidence, quantify 2024 overlap between PE and postoperative DVT, and fit secondary DVT-only and VTE-composite discharge models using the same locked discharge predictor set and temporal split. These secondary analyses are intentionally lean and do not trigger a second full model-search workflow.</p>
+
+<h3>12. Calculator artifacts and audit trail</h3>
+<p>The calculator-export step writes implementation-ready coefficient tables, knot metadata, and pooled CPT-3 level tables for later application development. A separate audit-trail step enumerates the numbered do-files and key generated artifacts into a manifest documenting the existence of the locked analysis dataset, model files, and downstream reporting outputs. This supports rerunnability, traceability, and release freeze verification.</p>
+
+<h3>13. Locked implementation notes as of March 28, 2026</h3>
+<p>The core locked analytic pipeline through final discharge and update model fitting has completed, with internally consistent sample counts and exported performance artifacts. The downstream reporting layer is still being executed and debugged script-by-script, particularly for missing-data sensitivity and later manuscript/supplement output generation. Accordingly, this document should be treated as a locked methods draft aligned to the current pipeline architecture and current completed outputs, with final manuscript wording to be synchronized once all downstream reporting scripts have completed successfully.</p>
+
+<h2>Current Locked Performance Snapshot for Internal Reference</h2>
+
+<p>The current locked core-model outputs indicate a common complete-case training cohort of 3,864,605 cases and a common 2024 scorable validation cohort of 956,434 cases with 3,413 PE events for the final discharge and update models. The currently locked discharge model is the spline wRVU plus pooled CPT-3 backbone, and the current locked update model adds readmission and reoperation timing bins. These values are included here for internal memorialization only and should be synchronized with final manuscript tables after the downstream reporting scripts finish successfully.</p>
+
+</body>
+</html>

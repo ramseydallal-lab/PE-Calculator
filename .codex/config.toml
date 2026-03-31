@@ -1,0 +1,15 @@
+model = "gpt-5.4"
+
+[mcp_servers.locked_fs]
+# Replace with the actual command for your local filesystem MCP server.
+# Expose only the Locked project root.
+command = "python"
+args = [
+  "/ABSOLUTE/PATH/TO/your_filesystem_mcp_server.py",
+  "--root",
+  "/Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked"
+]
+
+[profiles.safe_stata]
+model = "gpt-5.4"
+approval_policy = "on-request"

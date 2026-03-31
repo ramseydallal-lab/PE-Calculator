@@ -1,0 +1,4 @@
+Locked analysis build source
+Created: 27 Mar 2026 15:24:57
+Source tag: ssd_analysis_ready_withcpt3pool
+Source path: /Volumes/DallalMinix/Applications/STATA DTA/nsqip_puf20_24_analysis_ready_v01_withcpt3pool.dta

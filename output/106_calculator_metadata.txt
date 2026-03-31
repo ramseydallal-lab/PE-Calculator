@@ -1,0 +1,18 @@
+Locked PE calculator artifacts
+Created: 30 Mar 2026 23:23:24
+Discharge coefficients: /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/output/106_calculator_coefficients_discharge.csv
+Update coefficients: /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/output/106_calculator_coefficients_update.csv
+DVT discharge coefficients: /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/output/106_calculator_coefficients_dvt.csv
+VTE discharge coefficients: /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/output/106_calculator_coefficients_vte.csv
+Spline knots: /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/output/106_calculator_knots.csv
+CPT3 pool levels: /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/output/106_calculator_cpt3_pool_levels.csv
+Model summary: /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/output/106_calculator_model_summary.csv
+Variable manifest: /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/output/106_calculator_variable_manifest.csv
+Input dictionary: /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/output/106_calculator_input_dictionary.csv
+Clinician guidance: /Volumes/DallalMinix/ramseymini/Library/CloudStorage/OneDrive-ThomasJeffersonUniversityanditsAffiliates/_Enterprise/stats/Pulmonary Embolism/Locked/output/106_calculator_clinician_guidance.txt
+Current locked PE manuscript models still include fnstatus2_id, but the simplified bedside calculator omits this input because its incremental predictive contribution was negligible in locked discharge ablation testing.
+DVT and VTE exports are discharge-stage secondary models only; no update-stage DVT/VTE model is exported yet.
+The discharge PE model uses spline basis terms wrvu_s1-wrvu_s4 created by mkspline with training quartile knots.
+Procedure entry should be clinician-facing and map internally to pooled CPT-3 family and work RVU terms.
+Observed risk estimates are conditioned on historical NSQIP-era care patterns and incompletely observed prophylaxis exposure.
+TODO: confirm final app-side factor-level label mapping before external release.

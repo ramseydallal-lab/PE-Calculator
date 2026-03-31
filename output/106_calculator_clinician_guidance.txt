@@ -1,0 +1,7 @@
+Simplified clinician-facing calculator guidance
+Created: 30 Mar 2026 23:23:24
+Use clinically entered concepts only: age, BMI, disseminated cancer, operative time, postoperative length of stay at discharge, ASA class, inpatient/outpatient status, and procedure selection.
+For the update model, also record timing of first readmission and first reoperation within 30 days.
+The bedside calculator omits baseline functional status to improve usability; the locked research manuscript model still includes that term.
+Predicted risk reflects observed ACS-NSQIP outcomes under 2020-2024 care patterns and may be influenced by thromboprophylaxis or preventive care not fully captured in the source data.
+Low predicted risk does not necessarily equal low untreated biologic thrombosis risk.

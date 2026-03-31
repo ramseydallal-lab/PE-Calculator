@@ -1,0 +1,45 @@
+.DS_Store
+
+# Large generated datasets and model artifacts
+output/*.dta
+output/*.ster
+output/*predictions*.dta
+output/*predictions*.csv
+output/*checkpoint*.dta
+output/*checkpoint*.csv
+output/*build_summary*.csv
+output/*model_summary*.csv
+output/*variable_manifest*.csv
+output/*input_dictionary*.csv
+output/*coefficients*.csv
+output/*knots*.csv
+output/*cpt3_pool_levels*.csv
+output/*bootstrap_summary*.csv
+
+# Generated tables and figures
+tables/*.csv
+figures/*.pdf
+ster/*
+
+# Logs, temp files, and backups
+logs/*
+tmp/*
+archive/*
+*.log
+
+# Keep reusable automation and release artifacts
+!output/PE_Risk_Calculator_NSQIP_v3.html
+!output/PE_Risk_Calculator_NSQIP_v3_modeldata.js
+!output/PE_Risk_Calculator_NSQIP_v3.webmanifest
+!output/PE_Risk_Calculator_NSQIP_v3_sw.js
+!output/PE_Risk_Calculator_NSQIP_v3_validation_cases.js
+!output/PE_Risk_Calculator_NSQIP_v3_validation_cases.csv
+!output/PE_Risk_Calculator_NSQIP_v3_validation_runner.html
+!output/PE_Risk_Calculator_NSQIP_v3_validation_report.txt
+!output/validate_calculator_v3.py
+!output/20260328_locked_methods_manuscript_and_supplement.rtf
+!output/20260329_calculator_spec_clinical_inputs.md
+!output/20260326_project_state_reconciliation.txt
+
+# Keep toolkit docs for future projects
+!tmp/error_patterns.md

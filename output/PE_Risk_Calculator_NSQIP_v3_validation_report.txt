@@ -1,0 +1,39 @@
+PE_Risk_Calculator_NSQIP_v3 validation report
+Created: 2026-03-30
+
+Validation approach
+- Independent reference values were computed from the locked 106 coefficient exports and spline knots.
+- The actual webpage implementation was then exercised in headless Chrome using the live calculator functions in PE_Risk_Calculator_NSQIP_v3.html.
+- The runner compared actual webpage outputs to locked expected values for a fixed representative case set.
+
+Validation artifacts
+- Validation case table: PE_Risk_Calculator_NSQIP_v3_validation_cases.csv
+- Validation case list: PE_Risk_Calculator_NSQIP_v3_validation_cases.js
+- Browser runner: PE_Risk_Calculator_NSQIP_v3_validation_runner.html
+- Independent reference script: validate_calculator_v3.py
+
+Case coverage
+- 8 discharge cases
+- 4 update cases
+- Included:
+  - common outpatient low-risk procedure
+  - common inpatient moderate-risk procedure
+  - cancer/high-complexity colectomy
+  - joint replacement
+  - long-stay spine case
+  - pooled Other CPT-3 family case
+  - robotic prostatectomy
+  - outpatient thyroidectomy
+  - early and late readmission/reoperation update scenarios
+
+Result
+- PASS
+- 12 of 12 validation cases matched the locked reference outputs.
+- Worst absolute difference: 4.337e-19
+
+Interpretation
+- The webpage implementation reproduces the locked exported model outputs for the tested PE, DVT, VTE, and update scenarios.
+- This validates the calculator math, CPT lookup wiring for the tested codes, pooled CPT-3 mapping, and spline implementation for the representative case set.
+
+Remaining release caution
+- App-side factor-level label mapping should still be reviewed before external release, as noted in 106_calculator_metadata.txt.
