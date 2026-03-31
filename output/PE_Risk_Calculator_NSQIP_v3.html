@@ -24,12 +24,17 @@
         .subtitle { font-size: 15px; opacity: 0.95; margin-bottom: 4px; }
         .version { font-size: 11px; opacity: 0.8; margin-top: 5px; }
         .model-hash { font-family: 'Courier New', monospace; font-size: 10px; opacity: 0.7; margin-top: 3px; }
-        .tabs { display: flex; background: #f5f5f5; border-bottom: 2px solid #ddd; }
-        .tab { flex: 1; padding: 15px; text-align: center; cursor: pointer; background: #f5f5f5; border: none; font-size: 14px; font-weight: 500; color: #555; transition: all 0.3s; }
+        .tabs { display: flex; background: #f5f5f5; border-bottom: 2px solid #ddd; overflow-x: auto; scrollbar-width: thin; scroll-behavior: smooth; }
+        .tab { flex: 1 1 0; padding: 15px; text-align: center; cursor: pointer; background: #f5f5f5; border: none; font-size: 14px; font-weight: 600; color: #555; transition: all 0.3s; }
         .tab:hover { background: #e8e8e8; color: #333; }
         .tab.active { background: white; border-bottom: 3px solid #0066cc; color: #0066cc; }
+        .tab-label { display: block; white-space: nowrap; }
         .tab-content { display: none; padding: 30px; }
         .tab-content.active { display: block; }
+        .quick-start { background: linear-gradient(135deg, #eef7ff 0%, #f8fbff 100%); border: 1px solid #cfe1f5; border-radius: 10px; padding: 16px 18px; margin-bottom: 22px; }
+        .quick-start h3 { color: #004999; font-size: 15px; margin-bottom: 8px; }
+        .quick-start p { color: #345; font-size: 13px; line-height: 1.6; }
+        .quick-start strong { color: #003366; }
         .disclaimer { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin-bottom: 25px; border-radius: 4px; }
         .disclaimer h3 { color: #856404; font-size: 15px; margin-bottom: 8px; }
         .disclaimer p { color: #856404; font-size: 13px; line-height: 1.6; margin-bottom: 6px; }
@@ -72,8 +77,16 @@
         .section-divider p { color: #666; font-size: 13px; }
         button.calc-btn { background: linear-gradient(135deg, #0066cc 0%, #004999 100%); color: white; padding: 14px 30px; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; transition: transform 0.2s; }
         button.calc-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,102,204,0.3); }
+        .action-row { display: flex; gap: 12px; margin-top: 14px; }
+        .action-row > * { flex: 1; }
+        .ghost-btn { background: white; color: #004999; border: 2px solid #b7cfe7; padding: 12px 16px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .ghost-btn:hover { border-color: #0066cc; background: #f7fbff; }
         .results { margin-top: 25px; padding: 25px; background: #f8f9fa; border-radius: 8px; display: none; }
         .results.show { display: block; }
+        .result-summary-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 14px 0 18px 0; }
+        .summary-pill { background: white; border: 1px solid #dbe6f1; border-radius: 10px; padding: 12px; text-align: center; }
+        .summary-pill .summary-label { display: block; font-size: 11px; color: #6c7a89; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+        .summary-pill .summary-value { display: block; font-size: 16px; color: #003b73; font-weight: 700; }
         .risk-value { font-size: 48px; font-weight: bold; color: #0066cc; text-align: center; margin: 15px 0; position: relative; }
         .risk-value::after { content: 'Decision support estimate'; font-size: 11px; color: #999; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); white-space: nowrap; }
         .frequency { text-align: center; color: #666; font-size: 15px; margin: 20px 0 10px 0; }
@@ -96,6 +109,14 @@
         .secondary-card h4 { color: #004999; font-size: 15px; margin-bottom: 6px; }
         .secondary-card .mini-risk { font-size: 28px; font-weight: 700; color: #0066cc; }
         .secondary-card .mini-meta { color: #666; font-size: 12px; line-height: 1.6; margin-top: 6px; }
+        .next-step-box { background: linear-gradient(135deg, #f6fbff 0%, #edf6ff 100%); border: 1px solid #c8dcf1; border-radius: 10px; padding: 16px; margin-top: 16px; }
+        .next-step-box h4 { color: #004999; font-size: 15px; margin-bottom: 8px; }
+        .next-step-box p { color: #334; font-size: 13px; line-height: 1.6; }
+        .clinical-note { background: white; border: 1px solid #d7e1eb; border-radius: 10px; padding: 16px; margin-top: 16px; }
+        .clinical-note h4 { color: #20384f; font-size: 14px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+        .clinical-note p { color: #2f3b48; font-size: 13px; line-height: 1.7; }
+        .print-row { display: flex; gap: 10px; margin-top: 14px; }
+        .print-row > * { flex: 1; }
         .calculator-note { background: #eef7f2; border-left: 4px solid #2a7b50; padding: 14px; margin: 16px 0; border-radius: 6px; color: #184b31; font-size: 13px; line-height: 1.6; }
         .debug-panel { margin-top: 18px; padding: 14px; background: #f1f1f1; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 11px; display: none; white-space: pre-wrap; }
         .debug-panel.show { display: block; }
@@ -115,6 +136,15 @@
         .proph-alert.show { display: block; }
         .proph-alert h3 { color: #721c24; margin-bottom: 8px; font-size: 16px; }
         .proph-alert p { color: #721c24; font-size: 14px; line-height: 1.6; }
+        .proph-essentials { background: linear-gradient(135deg, #f8fbff 0%, #eef6ff 100%); border: 1px solid #cadcf0; border-radius: 10px; padding: 18px; margin-bottom: 20px; }
+        .proph-essentials h3 { color: #004999; font-size: 16px; margin-bottom: 8px; }
+        .proph-essentials p { color: #334; font-size: 13px; line-height: 1.7; }
+        .proph-essentials ul { margin: 10px 0 0 18px; color: #334; font-size: 13px; line-height: 1.7; }
+        .evidence-drawer { margin-bottom: 16px; border: 1px solid #d6e3ef; border-radius: 10px; background: white; overflow: hidden; }
+        .evidence-drawer summary { cursor: pointer; list-style: none; padding: 14px 16px; font-weight: 700; color: #004999; background: #f4f9ff; }
+        .evidence-drawer summary::-webkit-details-marker { display: none; }
+        .evidence-drawer[open] summary { border-bottom: 1px solid #d6e3ef; }
+        .drawer-body { padding: 16px; }
         .proph-section { margin-bottom: 24px; }
         .proph-section h3 { color: #004999; font-size: 17px; border-bottom: 2px solid #0066cc; padding-bottom: 6px; margin-bottom: 14px; }
         .med-card { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 16px; margin-bottom: 12px; }
@@ -204,7 +234,18 @@
         .bmi-unit-toggle { display: flex; border: 2px solid #0066cc; border-radius: 6px; overflow: hidden; margin-bottom: 14px; }
         .bmi-unit-toggle button { flex: 1; padding: 8px; border: none; background: white; font-size: 13px; font-weight: 600; cursor: pointer; color: #0066cc; transition: all 0.2s; }
         .bmi-unit-toggle button.active { background: #0066cc; color: white; }
-        @media (max-width: 768px) { .container { margin: 10px; } h1 { font-size: 20px; } .tab { font-size: 12px; padding: 12px 8px; } .tab-content { padding: 18px; } .risk-value { font-size: 36px; } .form-row { flex-direction: column; gap: 0; } .cpt-info .meta { flex-direction: column; gap: 4px; } .contra-grid { grid-template-columns: 1fr; } .def-popup-inner { width: 95%; } .secondary-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .container { margin: 10px; } h1 { font-size: 20px; } .tab { flex: 0 0 auto; min-width: 220px; font-size: 12px; padding: 12px 14px; } .tab-content { padding: 18px; } .risk-value { font-size: 36px; } .form-row { flex-direction: column; gap: 0; } .action-row { flex-direction: column; } .print-row { flex-direction: column; } .cpt-info .meta { flex-direction: column; gap: 4px; } .contra-grid { grid-template-columns: 1fr; } .def-popup-inner { width: 95%; } .secondary-grid { grid-template-columns: 1fr; } .result-summary-strip { grid-template-columns: 1fr; } }
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; border-radius: 0; max-width: none; }
+            .tabs, form, .copy-btn, .proph-nav, .disclaimer-toggle, .full-disclaimers, .debug-panel, .print-row button:last-child, .footer, .header .version, .header .model-hash { display: none !important; }
+            .tab-content { display: none !important; }
+            .tab-content.active { display: block !important; }
+            .results { display: block !important; background: white; padding: 0; }
+            .proph-cta, .error-banner { display: none !important; }
+            .quick-start, .calculator-note { border: 1px solid #ddd; background: white; }
+            .clinical-note, .next-step-box, .info-box, .reassessment-box, .secondary-card, .summary-pill { break-inside: avoid; }
+        }
     </style>
 </head>
 <body>
@@ -269,10 +310,10 @@
 
     <div class="error-banner" id="error-banner"></div>
     <div class="tabs">
-        <button class="tab active" data-tab="discharge">Discharge PE / DVT / VTE</button>
-        <button class="tab" data-tab="update">Post-Discharge PE Update</button>
-        <button class="tab" data-tab="prophylaxis">Extended Prophylaxis</button>
-        <button class="tab" data-tab="about">About & Definitions</button>
+        <button class="tab active" data-tab="discharge"><span class="tab-label">Discharge PE / DVT / VTE</span></button>
+        <button class="tab" data-tab="update"><span class="tab-label">Post-Discharge PE Update</span></button>
+        <button class="tab" data-tab="prophylaxis"><span class="tab-label">Extended Prophylaxis</span></button>
+        <button class="tab" data-tab="about"><span class="tab-label">About & Definitions</span></button>
     </div>
 
     <!-- TAB 1: DISCHARGE -->
@@ -305,6 +346,10 @@
                     <li>NOT FDA-cleared. Research and clinical decision support only.</li>
                 </ul>
             </div>
+        </div>
+        <div class="quick-start">
+            <h3>Quick Start</h3>
+            <p><strong>1.</strong> Search the operation by CPT or plain-language name. <strong>2.</strong> Enter the bedside variables available at discharge. <strong>3.</strong> Use the PE estimate as the main decision signal; DVT and VTE are secondary context. If the patient is later readmitted or reoperated, move to the <strong>Update</strong> tab.</p>
         </div>
 
         <form id="discharge-form" autocomplete="off">
@@ -355,13 +400,21 @@
             <div class="form-group"><label>Inpatient/Outpatient <span class="info-icon" onclick="showDef('inout')">i</span></label>
                 <select id="dis-inout"><option value="1" selected>Inpatient (reference)</option><option value="2">Outpatient</option></select></div>
             <div class="calculator-note">This bedside version intentionally omits functional status to reduce friction. The locked manuscript model retained functional status, but its incremental discrimination gain was negligible in ablation testing.</div>
-            <button type="submit" class="calc-btn">Calculate Discharge PE, DVT, and VTE Risk</button>
+            <div class="action-row">
+                <button type="submit" class="calc-btn">Calculate Discharge PE, DVT, and VTE Risk</button>
+                <button type="button" class="ghost-btn" onclick="resetCalculatorForm('dis')">Clear Discharge Form</button>
+            </div>
         </form>
         <div class="results" id="dis-results">
             <h2 style="text-align:center;color:#333;margin-bottom:15px;">Discharge Risk Assessment</h2>
             <div class="risk-value" id="dis-risk-value"></div>
             <div class="frequency" id="dis-frequency"></div>
             <div class="risk-category" id="dis-risk-category"></div>
+            <div class="result-summary-strip">
+                <div class="summary-pill"><span class="summary-label">Primary decision model</span><span class="summary-value">Pulmonary embolism</span></div>
+                <div class="summary-pill"><span class="summary-label">Best use case</span><span class="summary-value">At discharge</span></div>
+                <div class="summary-pill"><span class="summary-label">If course changes</span><span class="summary-value">Use update tab</span></div>
+            </div>
             <div class="info-box"><h4>Risk Tiers (PE-Specific, NSQIP)</h4><ul>
                 <li><strong>Low (&lt;0.15%):</strong> Standard perioperative VTE prophylaxis; routine discharge education.</li>
                 <li><strong>Moderate (0.15-0.34%):</strong> Consider patient-specific extended prophylaxis; closer follow-up.</li>
@@ -384,6 +437,14 @@
                     <div class="mini-meta" id="dis-vte-frequency"></div>
                 </div>
             </div>
+            <div class="next-step-box" id="dis-next-step">
+                <h4>What to do next</h4>
+                <p id="dis-next-step-text"></p>
+            </div>
+            <div class="clinical-note" id="dis-clinical-note">
+                <h4>Clinical Summary</h4>
+                <p id="dis-clinical-note-text"></p>
+            </div>
             <div class="proph-cta" id="dis-proph-cta">
                 <button class="proph-cta-btn" id="dis-proph-cta-btn" onclick="document.querySelector('.tab[data-tab=&quot;prophylaxis&quot;]').click();">
                     <span id="dis-proph-cta-text"></span>
@@ -391,7 +452,10 @@
                 </button>
             </div>
             <div class="certainty-panel" id="dis-certainty" style="display:none;"></div>
-            <button onclick="toggleDebug('dis')" class="calc-btn" style="margin-top:15px;background:#6c757d;">Show Coefficient Trace</button>
+            <div class="print-row">
+                <button type="button" class="ghost-btn" onclick="printSummary('dis')">Print Clinical Summary</button>
+                <button onclick="toggleDebug('dis')" class="ghost-btn">Show Coefficient Trace</button>
+            </div>
             <div class="debug-panel" id="dis-debug"></div>
         </div>
     </div>
@@ -402,6 +466,10 @@
             <h3>Post-Discharge Update Model</h3>
             <p><strong>Recalculates PE risk after sentinel post-discharge events.</strong> Readmission timing is the single most powerful predictor (OR up to 21.8). Reoperation timing modulates risk further.</p>
             <p><strong>Model:</strong> Validated AUC = 0.892 in 2024 temporal validation. Uses the same locked baseline/procedure backbone as the discharge PE model plus readmission and reoperation timing.</p>
+        </div>
+        <div class="quick-start">
+            <h3>When to use this update model</h3>
+            <p>Use this tab only after a <strong>new post-discharge sentinel event</strong>, especially readmission or reoperation. It updates the PE estimate after the clinical course changes and should not replace the original discharge calculation.</p>
         </div>
         <form id="update-form" autocomplete="off">
             <div class="section-divider" style="border-top:none;margin-top:0;padding-top:0;">
@@ -459,16 +527,32 @@
                     <select id="upd-reop"><option value="0" selected>No reoperation (reference)</option><option value="1">POD 0-3</option><option value="2">POD 4-7</option><option value="3">POD 8-14</option><option value="4">POD 15-30</option></select></div>
             </div>
             <div class="calculator-note">The update model remains PE-only. DVT and composite VTE are currently exported as discharge-stage secondary models, not dynamic post-discharge update models.</div>
-            <button type="submit" class="calc-btn">Calculate Updated PE Risk</button>
+            <div class="action-row">
+                <button type="submit" class="calc-btn">Calculate Updated PE Risk</button>
+                <button type="button" class="ghost-btn" onclick="resetCalculatorForm('upd')">Clear Update Form</button>
+            </div>
         </form>
         <div class="results" id="upd-results">
             <h2 style="text-align:center;color:#333;margin-bottom:15px;">Updated Risk Assessment</h2>
             <div class="risk-value" id="upd-risk-value"></div>
             <div class="frequency" id="upd-frequency"></div>
             <div class="risk-category" id="upd-risk-category"></div>
+            <div class="result-summary-strip">
+                <div class="summary-pill"><span class="summary-label">Primary decision model</span><span class="summary-value">Pulmonary embolism</span></div>
+                <div class="summary-pill"><span class="summary-label">Trigger</span><span class="summary-value">Readmission / reoperation</span></div>
+                <div class="summary-pill"><span class="summary-label">Use after</span><span class="summary-value">Clinical change</span></div>
+            </div>
             <div class="info-box"><h4>Interpretation</h4>
                 <p>The Update model captures the massive risk amplification from post-discharge sentinel events. Readmission within POD 0-3 carries an OR of 21.8 for PE.</p>
                 <p style="margin-top:8px;">Patients with early readmission + reoperation represent the highest-risk subgroup and should receive extended prophylaxis unless actively bleeding.</p></div>
+            <div class="next-step-box" id="upd-next-step">
+                <h4>What to do next</h4>
+                <p id="upd-next-step-text"></p>
+            </div>
+            <div class="clinical-note" id="upd-clinical-note">
+                <h4>Clinical Summary</h4>
+                <p id="upd-clinical-note-text"></p>
+            </div>
             <div class="proph-cta" id="upd-proph-cta">
                 <button class="proph-cta-btn" id="upd-proph-cta-btn" onclick="document.querySelector('.tab[data-tab=&quot;prophylaxis&quot;]').click();">
                     <span id="upd-proph-cta-text"></span>
@@ -476,7 +560,10 @@
                 </button>
             </div>
             <div class="certainty-panel" id="upd-certainty" style="display:none;"></div>
-            <button onclick="toggleDebug('upd')" class="calc-btn" style="margin-top:15px;background:#6c757d;">Show Coefficient Trace</button>
+            <div class="print-row">
+                <button type="button" class="ghost-btn" onclick="printSummary('upd')">Print Clinical Summary</button>
+                <button onclick="toggleDebug('upd')" class="ghost-btn">Show Coefficient Trace</button>
+            </div>
             <div class="debug-panel" id="upd-debug"></div>
         </div>
     </div>
@@ -486,6 +573,15 @@
         <div class="proph-alert" id="proph-alert">
             <h3>This Patient's Estimated PE Risk Is Elevated</h3>
             <p id="proph-alert-text">Based on the calculated risk, extended-duration pharmacologic prophylaxis should be strongly considered. Review the options below, weigh bleeding risk, and individualize the decision.</p>
+        </div>
+        <div class="proph-essentials">
+            <h3>Bedside Essentials</h3>
+            <p>This tab is intentionally organized for fast clinical use. If the patient is <strong>high risk for PE</strong> and does not have a major bleeding contraindication, the simplest default path is <strong>enoxaparin 40 mg subcutaneously once daily for 28 days total</strong>, adjusted for renal function and possibly extreme obesity.</p>
+            <ul>
+                <li>Use this guidance when the calculator suggests elevated PE risk and the patient is otherwise a reasonable prophylaxis candidate.</li>
+                <li>Do not treat the risk estimate as a bleeding model. Bleeding risk, neuraxial anesthesia, and surgeon preference still matter.</li>
+                <li>If injections are not feasible and bleeding risk is acceptable, oral options may be considered, but the evidence base is weaker and more context-dependent.</li>
+            </ul>
         </div>
 
         <div class="proph-nav">
@@ -579,6 +675,9 @@
         </div>
 
         <!-- SECTION 2: POSTOPERATIVE TIMING -->
+        <details class="evidence-drawer" open>
+        <summary>Postoperative Timing</summary>
+        <div class="drawer-body">
         <div class="proph-section" id="proph-timing">
             <h3>When to Start Postoperative Anticoagulation</h3>
             <p style="font-size:13px;color:#555;margin-bottom:14px;">Timing of first prophylactic dose after surgery depends on procedure type, bleeding risk, and neuraxial anesthesia. Below are general guidance ranges &mdash; always defer to surgical team assessment of hemostasis.</p>
@@ -640,8 +739,13 @@
                 <strong>Key timing references:</strong> ACCP 9th ed (Falck-Ytter 2012, Chest 141:e278S-e325S) | ASRA 4th Consensus (Horlocker 2018, Reg Anesth Pain Med 43:263-309) | ASH 2019 Surgical VTE Prevention (Anderson 2019, Blood Adv 3:3898-3944)
             </div>
         </div>
+        </div>
+        </details>
 
         <!-- SECTION 3: CONTRAINDICATIONS -->
+        <details class="evidence-drawer" open>
+        <summary>Contraindications</summary>
+        <div class="drawer-body">
         <div class="proph-section" id="proph-contraindications">
             <h3>Contraindications to Pharmacologic Prophylaxis</h3>
             <div class="contra-grid">
@@ -675,8 +779,13 @@
             </div>
             <p style="font-size:12px;color:#666;margin-top:10px;">When pharmacologic prophylaxis is contraindicated, <strong>mechanical prophylaxis</strong> (intermittent pneumatic compression devices) should be used. Reassess daily for resolution of contraindication and convert to pharmacologic prophylaxis when safe.</p>
         </div>
+        </div>
+        </details>
 
         <!-- SECTION 4: BLEEDING RISK -->
+        <details class="evidence-drawer">
+        <summary>Bleeding Risk Evidence</summary>
+        <div class="drawer-body">
         <div class="proph-section" id="proph-bleeding">
             <h3>Bleeding Risk Assessment</h3>
             <p style="font-size:13px;color:#555;margin-bottom:14px;">Extended prophylaxis is a tradeoff: VTE reduction versus bleeding increase. The table below summarizes the risk-benefit data from major trials.</p>
@@ -726,8 +835,13 @@
                 <strong>Key references:</strong> Tellor 2015 (J Pharm Tech 31:228-233) | Choi 2025 (Int J Colorectal Dis 40:211) | Eikelboom 2001 (Lancet 358:9-15) | Cochrane Review (Felder 2019, CD004318)
             </div>
         </div>
+        </div>
+        </details>
 
         <!-- SECTION 5: GUIDELINE SUMMARY -->
+        <details class="evidence-drawer">
+        <summary>Guideline Summary</summary>
+        <div class="drawer-body">
         <div class="proph-section" id="proph-guidelines">
             <h3>Guideline Recommendations for Extended Prophylaxis</h3>
 
@@ -773,6 +887,8 @@
                 <div class="guideline-ref">Sch&uuml;nemann HJ et al. Blood Adv. 2018;2(22):3198-3225.</div>
             </div>
         </div>
+        </div>
+        </details>
 
         <!-- CLINICAL DECISION FRAMEWORK -->
         <div class="proph-section">
@@ -1345,6 +1461,7 @@ function copyFromDischarge() {
         const info = lookupCPT(disCpt);
         if (info) fillCPT('upd', disCpt, info);
     }
+    activateTab('update');
 }
 
 // ============================================================
@@ -1708,10 +1825,111 @@ function displayResults(prefix, prob, debugText, extras) {
     renderCertaintyPanel(prefix, certainty);
     // Highlight extended prophylaxis tab when risk is high or very high
     updateProphylaxisAlert(prob, riskClass.text, prefix);
+    renderNextStep(prefix, prob);
+    renderClinicalNote(prefix, prob);
+    document.getElementById(`${prefix}-results`).scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderNextStep(prefix, prob) {
+    const target = document.getElementById(`${prefix}-next-step-text`);
+    if (!target) return;
+    if (prefix === 'dis') {
+        if (prob < 0.0015) {
+            target.textContent = 'Low PE risk. Standard perioperative prevention and routine discharge counseling are usually sufficient. Use the DVT and VTE values as secondary context rather than as the main treatment signal.';
+        } else if (prob < 0.0035) {
+            target.textContent = 'Moderate PE risk. Review procedure complexity, cancer status, mobility, and bleeding risk before discharge. Consider extended prophylaxis discussion if the broader clinical picture feels riskier than the point estimate alone.';
+        } else {
+            target.textContent = 'High or very high PE risk. Move to the Extended Prophylaxis tab for practical agent and timing guidance, and arrange explicit follow-up. If the patient is later readmitted or reoperated, recalculate on the Update tab.';
+        }
+        return;
+    }
+    if (prob < 0.0035) {
+        target.textContent = 'Updated PE risk remains below the high-risk threshold, but the sentinel event still warrants review. Compare this updated estimate with the discharge estimate and reassess bleeding risk if prophylaxis is under consideration.';
+    } else {
+        target.textContent = 'Updated PE risk is now high. Use the event timing and current clinical course, not the original discharge estimate alone, to guide prophylaxis reconsideration and escalation of follow-up.';
+    }
+}
+
+function renderClinicalNote(prefix, prob) {
+    const target = document.getElementById(`${prefix}-clinical-note-text`);
+    if (!target) return;
+    const pct = (prob * 100).toFixed(2);
+    const riskClass = classifyPeRisk(prob).text;
+    if (prefix === 'dis') {
+        target.textContent = `At discharge, this patient’s estimated 30-day PE risk is ${pct}% (${riskClass}). Use this as decision support rather than a standalone order signal. The PE estimate should lead the conversation; the DVT and composite VTE estimates provide supportive context. If the postoperative course changes through readmission or reoperation, switch to the update model rather than continuing to rely on the original discharge estimate.`;
+        return;
+    }
+    target.textContent = `After the selected sentinel event pattern, the updated 30-day PE risk is ${pct}% (${riskClass}). This estimate reflects the changed clinical course and should take priority over the original discharge estimate. Reassess prophylaxis candidacy, bleeding risk, and follow-up intensity based on the current event timing and the patient’s present condition.`;
+}
+
+function printSummary(prefix) {
+    activateTab(prefix === 'dis' ? 'discharge' : 'update');
+    window.print();
+}
+
+function activateTab(tabName) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+    const tab = document.querySelector(`.tab[data-tab="${tabName}"]`);
+    const panel = document.getElementById(tabName);
+    if (tab) tab.classList.add('active');
+    if (panel) panel.classList.add('active');
+}
+
+function resetCalculatorForm(prefix) {
+    const formId = prefix === 'dis' ? 'discharge-form' : 'update-form';
+    const form = document.getElementById(formId);
+    if (form) form.reset();
+
+    const ids = [`${prefix}-cpt`, `${prefix}-wrvu`, `${prefix}-cpt-resolved`];
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+
+    const infoBox = document.getElementById(`${prefix}-cpt-info`);
+    const sugBox = document.getElementById(`${prefix}-cpt-suggestions`);
+    const resultsBox = document.getElementById(`${prefix}-results`);
+    const debugBox = document.getElementById(`${prefix}-debug`);
+    const certaintyBox = document.getElementById(`${prefix}-certainty`);
+
+    if (infoBox) infoBox.classList.remove('show');
+    if (sugBox) sugBox.classList.remove('show');
+    if (resultsBox) resultsBox.classList.remove('show');
+    if (debugBox) debugBox.classList.remove('show');
+    if (certaintyBox) certaintyBox.style.display = 'none';
+
+    document.getElementById('error-banner').classList.remove('show');
+    document.getElementById('proph-alert').classList.remove('show');
+
+    const prophTab = document.querySelector('.tab[data-tab="prophylaxis"]');
+    if (prophTab) {
+        prophTab.style.background = '';
+        prophTab.style.color = '';
+        prophTab.style.fontWeight = '';
+        const label = prophTab.querySelector('.tab-label');
+        if (label) label.textContent = 'Extended Prophylaxis';
+    }
+
+    if (prefix === 'dis') {
+        document.getElementById('dis-wrvu-display').textContent = '-';
+        document.getElementById('dis-cpt3-display').textContent = '-';
+        document.getElementById('dis-major-display').textContent = '-';
+        document.getElementById('dis-proph-cta').classList.remove('show');
+        document.getElementById('dis-clinical-note-text').textContent = '';
+        document.getElementById('dis-next-step-text').textContent = '';
+    } else {
+        document.getElementById('upd-wrvu-display').textContent = '-';
+        document.getElementById('upd-cpt3-display').textContent = '-';
+        document.getElementById('upd-proph-cta').classList.remove('show');
+        document.getElementById('upd-clinical-note-text').textContent = '';
+        document.getElementById('upd-next-step-text').textContent = '';
+    }
 }
 
 function updateProphylaxisAlert(prob, catText, prefix) {
     const prophTab = document.querySelector('.tab[data-tab="prophylaxis"]');
+    const prophTabLabel = prophTab ? prophTab.querySelector('.tab-label') : null;
     const prophAlert = document.getElementById('proph-alert');
     const prophAlertText = document.getElementById('proph-alert-text');
     // CTA buttons in both result panels
@@ -1721,7 +1939,7 @@ function updateProphylaxisAlert(prob, catText, prefix) {
         prophTab.style.background = '#f8d7da';
         prophTab.style.color = '#721c24';
         prophTab.style.fontWeight = '700';
-        prophTab.textContent = '\u26A0 Extended Prophylaxis';
+        if (prophTabLabel) prophTabLabel.textContent = '\u26A0 Extended Prophylaxis';
         // Set alert content
         if (prob >= 0.01) {
             prophAlertText.innerHTML = `<strong>Calculated PE risk: ${(prob*100).toFixed(2)}% (${catText}).</strong> This patient is in the highest risk tier. Extended-duration pharmacologic prophylaxis is strongly recommended for 28-35 days post-discharge unless absolutely contraindicated. Review medication options, bleeding risk, and timing guidance below.`;
@@ -1749,7 +1967,7 @@ function updateProphylaxisAlert(prob, catText, prefix) {
         prophTab.style.background = '#fff3cd';
         prophTab.style.color = '#856404';
         prophTab.style.fontWeight = '600';
-        prophTab.textContent = 'Extended Prophylaxis';
+        if (prophTabLabel) prophTabLabel.textContent = 'Extended Prophylaxis';
         prophAlertText.innerHTML = `<strong>Calculated PE risk: ${(prob*100).toFixed(2)}% (${catText}).</strong> Consider patient-specific extended prophylaxis based on additional risk factors (malignancy, immobility, prior VTE, obesity). If prescribing, review options below.`;
         prophAlert.classList.add('show');
         // Show moderate CTA
@@ -1770,7 +1988,7 @@ function updateProphylaxisAlert(prob, catText, prefix) {
         prophTab.style.background = '';
         prophTab.style.color = '';
         prophTab.style.fontWeight = '';
-        prophTab.textContent = 'Extended Prophylaxis';
+        if (prophTabLabel) prophTabLabel.textContent = 'Extended Prophylaxis';
         prophAlert.classList.remove('show');
         for (const p of ctaPanels) {
             document.getElementById(`${p}-proph-cta`).classList.remove('show');
@@ -2083,10 +2301,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Tabs
     document.querySelectorAll('.tab').forEach(tab => {
         tab.addEventListener('click', () => {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-            tab.classList.add('active');
-            document.getElementById(tab.dataset.tab).classList.add('active');
+            activateTab(tab.dataset.tab);
         });
     });
     // Forms
