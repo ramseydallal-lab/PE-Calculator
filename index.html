@@ -9,43 +9,83 @@
     <meta http-equiv="refresh" content="0; url=./output/PE_Risk_Calculator_NSQIP_v3.html">
     <title>Redirecting to PE / VTE Calculator</title>
     <style>
+        :root {
+            --jh-deep-blue: #1c366b;
+            --jh-bright-blue: #59b7df;
+            --jh-teal: #4dc4cf;
+            --jh-chartreuse: #bfd730;
+            --jh-silver: #dfe1df;
+            --jh-navy: var(--jh-deep-blue);
+            --jh-royal: #234a8c;
+            --jh-blue: var(--jh-bright-blue);
+            --jh-display: "Miller Display", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+            --jh-sans: "Museo Sans", "Avenir Next", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
         body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: linear-gradient(135deg, #003366 0%, #005a8c 50%, #0077b6 100%);
+            font-family: var(--jh-sans);
+            background:
+                linear-gradient(135deg, rgba(28, 54, 107, 0.9) 0%, rgba(35, 74, 140, 0.7) 42%, rgba(89, 183, 223, 0.48) 72%, rgba(191, 215, 48, 0.24) 100%),
+                url('./output/assets/brand/jefferson-background-zoom-2026.jpg') center/cover no-repeat;
             min-height: 100vh;
             display: grid;
             place-items: center;
             color: #123;
+            position: relative;
+            overflow: hidden;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 14% 22%, rgba(255,255,255,0.18), transparent 18%),
+                radial-gradient(circle at 76% 8%, rgba(126,233,255,0.18), transparent 14%),
+                radial-gradient(circle at 92% 72%, rgba(95,203,99,0.18), transparent 18%);
+            pointer-events: none;
         }
         .card {
             width: min(640px, calc(100vw - 32px));
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-            padding: 32px 28px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(247,250,253,0.94));
+            border-radius: 28px;
+            box-shadow: 0 28px 70px rgba(5, 22, 56, 0.24);
+            padding: 34px 30px;
             text-align: center;
+            border: 1px solid rgba(255,255,255,0.24);
+            backdrop-filter: blur(16px);
+            position: relative;
+            z-index: 1;
+        }
+        .brand-banner {
+            width: min(360px, 100%);
+            height: auto;
+            display: block;
+            margin: 0 auto 20px;
         }
         h1 {
-            margin: 0 0 8px 0;
-            color: #004999;
-            font-size: 28px;
+            margin: 0 0 10px 0;
+            color: var(--jh-navy);
+            font-family: var(--jh-display);
+            font-size: 32px;
+            letter-spacing: -0.02em;
+            font-weight: 400;
         }
         p {
             margin: 0 0 14px 0;
             color: #44525f;
-            line-height: 1.6;
+            line-height: 1.7;
             font-size: 15px;
         }
         a {
             display: inline-block;
             margin-top: 10px;
-            padding: 14px 20px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #0066cc 0%, #004999 100%);
+            padding: 14px 22px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--jh-blue) 0%, var(--jh-royal) 52%, var(--jh-navy) 100%);
             color: white;
             text-decoration: none;
             font-weight: 700;
+            box-shadow: 0 18px 28px rgba(24, 72, 184, 0.18);
         }
         .subtle {
             margin-top: 16px;
@@ -56,6 +96,7 @@
 </head>
 <body>
     <main class="card">
+        <img class="brand-banner" src="./output/assets/brand/jefferson-banner.png" alt="Jefferson Health">
         <h1>Postoperative PE / VTE Calculator</h1>
         <p>Redirecting to the validated bedside calculator.</p>
         <p>If the calculator does not open automatically, use the button below.</p>
