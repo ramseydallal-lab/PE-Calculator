@@ -29,3 +29,28 @@ These outputs remain in the locked workspace on disk and can be regenerated from
 ## Current note
 
 Calculator validation passed on 12 of 12 representative cases against the locked exported model outputs.
+
+## Public deployment security notes
+
+This calculator is designed to be published as a public informational site with no authentication, no PHI collection, and no client-side persistence of user-entered values.
+
+Minimum deployment expectations:
+
+- Serve over HTTPS only
+- Do not add analytics, ad tags, session replay, trackers, or third-party embeds
+- Do not log calculator inputs at the web server, CDN, or analytics layer
+- Do not add free-text fields for patient information
+- Keep browser-side protections enabled in the HTML: CSP, referrer policy, permissions policy, and no-store cache directives
+
+Recommended host-level headers, which should be configured at the platform/CDN layer where supported:
+
+- `Strict-Transport-Security`
+- `X-Content-Type-Options: nosniff`
+- `Content-Security-Policy` as enforced response header
+- `Referrer-Policy: no-referrer`
+
+Operational policy for public use:
+
+- Display a visible notice not to enter direct patient identifiers
+- Treat the tool as clinical decision support and educational content, not treatment automation
+- Re-review content and security settings before adding any feature that transmits, stores, or exports user-entered data

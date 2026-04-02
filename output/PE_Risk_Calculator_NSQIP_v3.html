@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Postoperative VTE Risk Calculator using locked ACS-NSQIP 2020-2024 models for discharge PE, DVT, VTE, and post-discharge PE update risk.">
+    <meta name="description" content="Postoperative VTE Risk Calculator using locked ACS-NSQIP 2020-2024 models for discharge PE, DVT, VTE, and post-discharge PE triggered reassessment.">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; manifest-src 'self'; upgrade-insecure-requests">
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="Permissions-Policy" content="accelerometer=(), autoplay=(), camera=(), display-capture=(), fullscreen=(self), geolocation=(), gyroscope=(), microphone=(), payment=(), usb=()">
+    <meta http-equiv="Cache-Control" content="no-store, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
     <meta name="theme-color" content="#004999">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -256,7 +261,7 @@
         <h1>Postoperative VTE Risk Calculator</h1>
         <p class="subtitle">30-Day PE, DVT, and VTE Decision Support | ACS-NSQIP 2020-2024</p>
         <p class="version">Version 2026-03-30 v3 | Locked manuscript models + bedside simplification | N = 4,856,597</p>
-        <p class="model-hash">PE discharge AUC 0.811 | PE update AUC 0.892 | DVT discharge AUC 0.814 | VTE discharge AUC 0.811</p>
+        <p class="model-hash">PE discharge AUC 0.811 | PE triggered reassessment AUC 0.892 | DVT discharge AUC 0.814 | VTE discharge AUC 0.811</p>
     </div>
     <!-- Definition Pop-up Modal (reusable) -->
     <div class="def-popup" id="def-popup" onclick="if(event.target===this)closeDef()">
@@ -311,7 +316,7 @@
     <div class="error-banner" id="error-banner"></div>
     <div class="tabs">
         <button class="tab active" data-tab="discharge"><span class="tab-label">Discharge PE / DVT / VTE</span></button>
-        <button class="tab" data-tab="update"><span class="tab-label">Post-Discharge PE Update</span></button>
+        <button class="tab" data-tab="update"><span class="tab-label">Post-Discharge PE Reassessment</span></button>
         <button class="tab" data-tab="prophylaxis"><span class="tab-label">Extended Prophylaxis</span></button>
         <button class="tab" data-tab="about"><span class="tab-label">About & Definitions</span></button>
     </div>
@@ -322,13 +327,14 @@
             <h3>Clinical Decision Support Tool</h3>
             <p><strong>Risk estimates for CLINICAL DECISION SUPPORT only.</strong> NOT a substitute for clinical judgment. All decisions must incorporate individual patient factors, contraindications, bleeding risk, and clinical context.</p>
             <p><strong>Data:</strong> ACS-NSQIP PUF 2020-2024 (4.86M cases). <strong>Outcomes:</strong> postoperative PE, postoperative DVT, and composite VTE within 30 days. <strong>Model:</strong> locked logistic regression models with 2024 temporal validation (not FDA-cleared).</p>
+            <p><strong>Public-use notice:</strong> This public calculator is intended for educational and clinical decision-support use. Do not enter direct patient identifiers such as name, date of birth, medical record number, address, phone number, or free-text notes.</p>
             <button class="disclaimer-toggle" onclick="toggleDisclaimers('dis')">Show full disclaimers</button>
             <div class="full-disclaimers" id="dis-disclaimers">
                 <h4>Model Scope</h4>
                 <ul>
                     <li>Derived from ACS-NSQIP participating centers (2020-2024), all surgical specialties</li>
                     <li>Temporal validation: trained 2020-2023, tested 2024 (strict forward validation)</li>
-                    <li>Primary discharge PE model AUC = 0.811 and post-discharge PE update model AUC = 0.892 in 2024 validation</li>
+                    <li>Primary discharge PE model AUC = 0.811 and triggered reassessment model AUC = 0.892 in 2024 validation</li>
                     <li>Secondary discharge DVT and VTE models are exported for clinician context, not to replace PE-focused decision making</li>
                 </ul>
                 <h4>Procedure Signal</h4>
@@ -336,6 +342,7 @@
                     <li>Procedure complexity captured via locked work RVU spline terms plus pooled CPT-3 family</li>
                     <li>CPT code auto-populates work RVU and pooled CPT-3 family from the embedded CPT reference table</li>
                     <li>The bedside calculator omits functional status for usability, but the locked manuscript models retained it</li>
+                    <li>If functional status is a major concern clinically, interpret the bedside estimate with added caution</li>
                 </ul>
                 <h4>Limitations</h4>
                 <ul>
@@ -349,7 +356,7 @@
         </div>
         <div class="quick-start">
             <h3>Quick Start</h3>
-            <p><strong>1.</strong> Search the operation by CPT or plain-language name. <strong>2.</strong> Enter the bedside variables available at discharge. <strong>3.</strong> Use the PE estimate as the main decision signal; DVT and VTE are secondary context. If the patient is later readmitted or reoperated, move to the <strong>Update</strong> tab.</p>
+            <p><strong>1.</strong> Search the operation by CPT or plain-language name. <strong>2.</strong> Enter the bedside variables available at discharge. <strong>3.</strong> Use the PE estimate as the main decision signal; DVT and VTE are secondary context. If the patient is later readmitted or reoperated, move to the <strong>Reassessment</strong> tab. <strong>Do not enter patient identifiers.</strong> <strong>Not FDA-cleared.</strong></p>
         </div>
 
         <form id="discharge-form" autocomplete="off">
@@ -413,14 +420,14 @@
             <div class="result-summary-strip">
                 <div class="summary-pill"><span class="summary-label">Primary decision model</span><span class="summary-value">Pulmonary embolism</span></div>
                 <div class="summary-pill"><span class="summary-label">Best use case</span><span class="summary-value">At discharge</span></div>
-                <div class="summary-pill"><span class="summary-label">If course changes</span><span class="summary-value">Use update tab</span></div>
+                <div class="summary-pill"><span class="summary-label">If course changes</span><span class="summary-value">Use reassessment tab</span></div>
             </div>
             <div class="info-box"><h4>Risk Tiers (PE-Specific, NSQIP)</h4><ul>
                 <li><strong>Low (&lt;0.15%):</strong> Standard perioperative VTE prophylaxis; routine discharge education.</li>
                 <li><strong>Moderate (0.15-0.34%):</strong> Consider patient-specific extended prophylaxis; closer follow-up.</li>
                 <li><strong>High (0.35-0.99%):</strong> Extended prophylaxis strongly recommended unless contraindicated.</li>
                 <li><strong>Very High (&ge;1.0%):</strong> Highest risk tier. Extended prophylaxis + early follow-up essential.</li></ul></div>
-            <div class="reassessment-box"><h4>Dynamic Reassessment Required</h4>
+            <div class="reassessment-box"><h4>Triggered Reassessment</h4>
                 <p style="margin-bottom:8px;"><strong>Switch to "Post-Discharge Update" tab if any post-discharge event occurs:</strong></p>
                 <ul><li><strong>Readmission</strong> for any reason (POD timing matters)</li>
                 <li><strong>Reoperation</strong> for any reason</li>
@@ -463,13 +470,14 @@
     <!-- TAB 2: UPDATE -->
     <div class="tab-content" id="update">
         <div class="disclaimer">
-            <h3>Post-Discharge Update Model</h3>
-            <p><strong>Recalculates PE risk after sentinel post-discharge events.</strong> Readmission timing is the single most powerful predictor (OR up to 21.8). Reoperation timing modulates risk further.</p>
+            <h3>Post-Discharge Triggered Reassessment Model</h3>
+            <p><strong>Recalculates PE risk after sentinel post-discharge events.</strong> Readmission timing is the single strongest risk signal (OR up to 21.8). Reoperation timing changes risk further.</p>
             <p><strong>Model:</strong> Validated AUC = 0.892 in 2024 temporal validation. Uses the same locked baseline/procedure backbone as the discharge PE model plus readmission and reoperation timing.</p>
+            <p><strong>Public-use notice:</strong> This public calculator is intended for educational and clinical decision-support use. Do not enter direct patient identifiers or free-text patient information.</p>
         </div>
         <div class="quick-start">
-            <h3>When to use this update model</h3>
-            <p>Use this tab only after a <strong>new post-discharge sentinel event</strong>, especially readmission or reoperation. It updates the PE estimate after the clinical course changes and should not replace the original discharge calculation.</p>
+            <h3>When to use this reassessment model</h3>
+            <p>Use this tab only after a <strong>new post-discharge sentinel event</strong>, especially readmission or reoperation. It reassesses the PE estimate after the clinical course changes and should not replace the original discharge calculation. <strong>Do not enter patient identifiers.</strong> <strong>Not FDA-cleared.</strong></p>
         </div>
         <form id="update-form" autocomplete="off">
             <div class="section-divider" style="border-top:none;margin-top:0;padding-top:0;">
@@ -519,21 +527,21 @@
             </div>
 
             <div class="update-sentinel-box">
-                <h4>Post-Discharge Sentinel Events</h4>
-                <p style="color:#004999;font-size:13px;margin-bottom:15px;">These are the dynamic update variables. Select timing relative to the index operation.</p>
+                <h4>Triggered Reassessment</h4>
+                <p style="color:#004999;font-size:13px;margin-bottom:15px;">These are the sentinel-event timing variables. Select timing relative to the index operation.</p>
                 <div class="form-group"><label>Readmission Timing (POD) <span class="info-icon" onclick="showDef('readm')">i</span></label>
                     <select id="upd-readm"><option value="0" selected>No readmission (reference)</option><option value="1">POD 0-3 (highest risk)</option><option value="2">POD 4-7</option><option value="3">POD 8-14</option><option value="4">POD 15-30</option></select></div>
                 <div class="form-group"><label>Reoperation Timing (POD) <span class="info-icon" onclick="showDef('reop')">i</span></label>
                     <select id="upd-reop"><option value="0" selected>No reoperation (reference)</option><option value="1">POD 0-3</option><option value="2">POD 4-7</option><option value="3">POD 8-14</option><option value="4">POD 15-30</option></select></div>
             </div>
-            <div class="calculator-note">The update model remains PE-only. DVT and composite VTE are currently exported as discharge-stage secondary models, not dynamic post-discharge update models.</div>
+            <div class="calculator-note">The reassessment model remains PE-only. DVT and composite VTE are currently exported as discharge-stage secondary models, not post-discharge reassessment models.</div>
             <div class="action-row">
-                <button type="submit" class="calc-btn">Calculate Updated PE Risk</button>
-                <button type="button" class="ghost-btn" onclick="resetCalculatorForm('upd')">Clear Update Form</button>
+                <button type="submit" class="calc-btn">Calculate Reassessed PE Risk</button>
+                <button type="button" class="ghost-btn" onclick="resetCalculatorForm('upd')">Clear Reassessment Form</button>
             </div>
         </form>
         <div class="results" id="upd-results">
-            <h2 style="text-align:center;color:#333;margin-bottom:15px;">Updated Risk Assessment</h2>
+            <h2 style="text-align:center;color:#333;margin-bottom:15px;">Reassessed Risk Summary</h2>
             <div class="risk-value" id="upd-risk-value"></div>
             <div class="frequency" id="upd-frequency"></div>
             <div class="risk-category" id="upd-risk-category"></div>
@@ -543,7 +551,7 @@
                 <div class="summary-pill"><span class="summary-label">Use after</span><span class="summary-value">Clinical change</span></div>
             </div>
             <div class="info-box"><h4>Interpretation</h4>
-                <p>The Update model captures the massive risk amplification from post-discharge sentinel events. Readmission within POD 0-3 carries an OR of 21.8 for PE.</p>
+                <p>The reassessment model captures the substantial risk amplification from post-discharge sentinel events. Readmission within POD 0-3 carries an OR of 21.8 for PE.</p>
                 <p style="margin-top:8px;">Patients with early readmission + reoperation represent the highest-risk subgroup and should receive extended prophylaxis unless actively bleeding.</p></div>
             <div class="next-step-box" id="upd-next-step">
                 <h4>What to do next</h4>
@@ -892,20 +900,25 @@
 
         <!-- CLINICAL DECISION FRAMEWORK -->
         <div class="proph-section">
+            <div class="disclaimer" style="margin-top:0;">
+                <h3>Reference Guidance Only</h3>
+                <p><strong>This section does not prescribe treatment.</strong> The information below summarizes published guideline and trial data for bedside reference.</p>
+                <p>All medication selection, timing, dose, and duration decisions remain clinician decisions and must account for bleeding risk, renal and hepatic function, drug interactions, and procedure-specific concerns.</p>
+            </div>
             <h3>Clinical Decision Framework</h3>
             <div class="info-box" style="margin-top:0;">
                 <h4>When to Prescribe Extended Prophylaxis After Surgery</h4>
-                <p style="margin-bottom:10px;">Apply this framework after calculating the patient's PE risk using the Discharge or Update tab:</p>
+                <p style="margin-bottom:10px;">Apply this framework after calculating the patient's PE risk using the Discharge or Reassessment tab:</p>
                 <p><strong>Step 1 &mdash; Risk tier.</strong> If Low (&lt;0.15%), extended prophylaxis is generally not indicated. If Moderate (0.15-0.34%), consider patient-specific factors. If High (&ge;0.35%) or Very High (&ge;1.0%), extended prophylaxis is strongly recommended unless contraindicated.</p>
                 <p style="margin-top:8px;"><strong>Step 2 &mdash; Bleeding assessment.</strong> Review absolute and relative contraindications above. If absolute contraindication present, use mechanical prophylaxis only and reassess daily.</p>
                 <p style="margin-top:8px;"><strong>Step 3 &mdash; Agent selection.</strong> First-line: enoxaparin 40 mg SC daily &times; 28 days (strongest evidence, lowest NNH). If LMWH contraindicated (HIT, refusal of injections): consider rivaroxaban 10 mg PO daily &times; 28-35 days. Avoid apixaban for extended prophylaxis (negative trial).</p>
                 <p style="margin-top:8px;"><strong>Step 4 &mdash; Patient education.</strong> Counsel on injection technique (if LMWH), signs/symptoms of DVT/PE, when to seek emergency care. Arrange 2-week follow-up or phone check-in.</p>
-                <p style="margin-top:8px;"><strong>Step 5 &mdash; Reassess at follow-up.</strong> If readmission or reoperation occurs, return to the Post-Discharge Update tab for recalculated risk and adjust prophylaxis accordingly.</p>
+                <p style="margin-top:8px;"><strong>Step 5 &mdash; Reassess at follow-up.</strong> If readmission or reoperation occurs, return to the Post-Discharge Reassessment tab for recalculated risk and adjust prophylaxis accordingly.</p>
             </div>
         </div>
 
         <div class="footer" style="margin: 20px -30px -30px -30px; border-radius: 0;">
-            <p style="font-size:11px;"><strong>Disclaimer:</strong> This extended prophylaxis reference is provided for clinical decision support. It synthesizes published guideline recommendations and trial data but is NOT a substitute for individualized clinical judgment. All prescribing decisions must account for patient-specific bleeding risk, renal/hepatic function, drug interactions, and surgical team preferences.</p>
+            <p style="font-size:11px;"><strong>Disclaimer:</strong> The following is reference information synthesized from published guidelines. It does not constitute a prescribing recommendation from this model. This extended prophylaxis reference is provided for clinical decision support and is NOT a substitute for individualized clinical judgment. All prescribing decisions must account for patient-specific bleeding risk, renal/hepatic function, drug interactions, and surgical team preferences.</p>
             <p style="margin-top:6px;font-size:11px;">Content synthesized from: ASH 2018/2019 VTE Guidelines | ACCP/CHEST 9th Ed | NICE NG89 | ASCRS 2023 | Tellor 2015 | Choi 2025</p>
         </div>
     </div>
@@ -914,7 +927,7 @@
     <div class="tab-content" id="about">
         <div class="info-box" style="margin-top:0;"><h4>Locked Calculator Architecture</h4>
             <p><strong>Discharge tab:</strong> bedside PE, DVT, and composite VTE risk at discharge using clinically available variables, work RVU spline terms, and pooled CPT-3 family. Validated AUCs: PE 0.811, DVT 0.814, VTE 0.811.</p>
-            <p style="margin-top:8px;"><strong>Update tab:</strong> PE-only dynamic reassessment using the same baseline/procedure backbone plus readmission timing and reoperation timing. Validated AUC: 0.892.</p></div>
+            <p style="margin-top:8px;"><strong>Reassessment tab:</strong> PE-only triggered reassessment using the same baseline/procedure backbone plus readmission timing and reoperation timing. Validated AUC: 0.892.</p></div>
         <div class="info-box"><h4>Data Source &amp; Validation</h4><ul>
             <li><strong>Training:</strong> ACS-NSQIP PUF 2020-2023 complete-case cohort (3,864,605 cases)</li>
             <li><strong>Temporal validation:</strong> 2024 complete-case cohort (956,434 cases; 3,413 PE events)</li>
@@ -930,6 +943,7 @@
 
     <div class="footer">
         <p><strong>NOT FDA-CLEARED.</strong> Research and clinical decision support only.</p>
+        <p style="margin-top:8px;">Public informational calculator. Do not enter direct patient identifiers or free-text clinical notes.</p>
         <p style="margin-top:8px;">Clinicians retain full responsibility for all treatment decisions. Does NOT model bleeding risk.</p>
         <p style="margin-top:8px;">&copy; 2026 Ramsey M. Dallal, MD, MBA | Jefferson Health | v3 2026-03-30</p>
     </div>
@@ -1729,8 +1743,8 @@ function assessCertainty(prefix) {
             flags.push({
                 severity: 0,
                 category: 'READMISSION',
-                reason: 'Readmission timing is the most powerful predictor (OR up to 21.8)',
-                detail: 'The UPDATE model\'s AUC of 0.888 is partly driven by readmission timing. Caution: readmission for PE itself would be tautological. The model assumes readmission is observed BEFORE PE diagnosis. If PE is the cause of the readmission, the risk is already realized — not a prediction.'
+                reason: 'Readmission timing is the strongest risk signal (OR up to 21.8)',
+                detail: 'The triggered reassessment model\'s AUC of 0.888 is partly driven by readmission timing. Caution: readmission for PE itself would be tautological. The model assumes readmission is observed BEFORE PE diagnosis. If PE is the cause of the readmission, the risk is already realized, not predicted.'
             });
         }
     }
@@ -1839,14 +1853,14 @@ function renderNextStep(prefix, prob) {
         } else if (prob < 0.0035) {
             target.textContent = 'Moderate PE risk. Review procedure complexity, cancer status, mobility, and bleeding risk before discharge. Consider extended prophylaxis discussion if the broader clinical picture feels riskier than the point estimate alone.';
         } else {
-            target.textContent = 'High or very high PE risk. Move to the Extended Prophylaxis tab for practical agent and timing guidance, and arrange explicit follow-up. If the patient is later readmitted or reoperated, recalculate on the Update tab.';
+            target.textContent = 'High or very high PE risk. Move to the Extended Prophylaxis tab for practical agent and timing guidance, and arrange explicit follow-up. If the patient is later readmitted or reoperated, recalculate on the Reassessment tab.';
         }
         return;
     }
     if (prob < 0.0035) {
-        target.textContent = 'Updated PE risk remains below the high-risk threshold, but the sentinel event still warrants review. Compare this updated estimate with the discharge estimate and reassess bleeding risk if prophylaxis is under consideration.';
+        target.textContent = 'Reassessed PE risk remains below the high-risk threshold, but the sentinel event still warrants review. Compare this reassessed estimate with the discharge estimate and reassess bleeding risk if prophylaxis is under consideration.';
     } else {
-        target.textContent = 'Updated PE risk is now high. Use the event timing and current clinical course, not the original discharge estimate alone, to guide prophylaxis reconsideration and escalation of follow-up.';
+        target.textContent = 'Reassessed PE risk is now high. Use the event timing and current clinical course, not the original discharge estimate alone, to guide prophylaxis reconsideration and escalation of follow-up.';
     }
 }
 
@@ -1856,10 +1870,10 @@ function renderClinicalNote(prefix, prob) {
     const pct = (prob * 100).toFixed(2);
     const riskClass = classifyPeRisk(prob).text;
     if (prefix === 'dis') {
-        target.textContent = `At discharge, this patient’s estimated 30-day PE risk is ${pct}% (${riskClass}). Use this as decision support rather than a standalone order signal. The PE estimate should lead the conversation; the DVT and composite VTE estimates provide supportive context. If the postoperative course changes through readmission or reoperation, switch to the update model rather than continuing to rely on the original discharge estimate.`;
+        target.textContent = `At discharge, this patient’s estimated 30-day PE risk is ${pct}% (${riskClass}). Use this as decision support rather than a standalone order signal. The PE estimate should lead the conversation; the DVT and composite VTE estimates provide supportive context. If the postoperative course changes through readmission or reoperation, switch to the reassessment model rather than continuing to rely on the original discharge estimate.`;
         return;
     }
-    target.textContent = `After the selected sentinel event pattern, the updated 30-day PE risk is ${pct}% (${riskClass}). This estimate reflects the changed clinical course and should take priority over the original discharge estimate. Reassess prophylaxis candidacy, bleeding risk, and follow-up intensity based on the current event timing and the patient’s present condition.`;
+    target.textContent = `After the selected sentinel event pattern, the reassessed 30-day PE risk is ${pct}% (${riskClass}). This estimate reflects the changed clinical course and should take priority over the original discharge estimate. Reassess prophylaxis candidacy, bleeding risk, and follow-up intensity based on the current event timing and the patient’s present condition.`;
 }
 
 function printSummary(prefix) {
@@ -2139,7 +2153,7 @@ const FIELD_DEFS = {
 <li><strong>Planned readmissions</strong> — staged procedures, planned chemotherapy admissions, etc.</li>
 <li>Admission to a rehabilitation or skilled nursing facility</li>
 </ul>
-<div class="def-highlight"><strong>Why timing matters:</strong> Early readmission (POD 0–3) carries an OR of 21.8 for PE — this is the single largest risk amplifier in the Update model. This likely captures acute surgical emergencies (anastomotic leak, bleeding, wound dehiscence) that trigger massive inflammatory and prothrombotic cascades.</div>
+<div class="def-highlight"><strong>Why timing matters:</strong> Early readmission (POD 0–3) carries an OR of 21.8 for PE — this is the strongest risk signal in the triggered reassessment model. This likely captures acute surgical emergencies (anastomotic leak, bleeding, wound dehiscence) that trigger substantial inflammatory and prothrombotic cascades.</div>
 <div class="def-source">Source: ACS-NSQIP PUF Data Dictionary, 2024. Variable: READMISSION1 + READMPOESSION1.</div>`
     },
     cpt_scope: {
