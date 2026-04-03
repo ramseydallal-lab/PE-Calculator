@@ -600,7 +600,7 @@
     <div class="error-banner" id="error-banner"></div>
     <div class="tabs">
         <button class="tab active" data-tab="discharge"><span class="tab-label">Discharge PE / DVT / VTE</span></button>
-        <button class="tab" data-tab="update"><span class="tab-label">Post-Discharge PE Reassessment</span></button>
+        <button class="tab" data-tab="update"><span class="tab-label">Triggered Reassessment</span></button>
         <button class="tab" data-tab="prophylaxis"><span class="tab-label">Extended Prophylaxis</span></button>
         <button class="tab" data-tab="about"><span class="tab-label">About & Definitions</span></button>
     </div>
@@ -704,15 +704,16 @@
             <div class="result-summary-strip">
                 <div class="summary-pill"><span class="summary-label">Primary decision model</span><span class="summary-value">Pulmonary embolism</span></div>
                 <div class="summary-pill"><span class="summary-label">Best use case</span><span class="summary-value">At discharge</span></div>
-                <div class="summary-pill"><span class="summary-label">If course changes</span><span class="summary-value">Use reassessment tab</span></div>
+                <div class="summary-pill"><span class="summary-label">If readmitted/reoperated</span><span class="summary-value">Use Triggered Reassessment.</span></div>
             </div>
+            <div class="info-box" style="background-color:#e8f4f8;border-left:4px solid #004999;"><h4>Step 1: Sequential Workflow</h4><p><strong>Every patient receives this discharge risk estimate.</strong> If the patient is later readmitted or undergoes reoperation, proceed to the <strong>Triggered Reassessment</strong> tab for an updated estimate that accounts for these sentinel events and their timing from the index operation.</p></div>
             <div class="info-box"><h4>Risk Tiers (PE-Specific, NSQIP)</h4><ul>
                 <li><strong>Low (&lt;0.15%):</strong> Standard perioperative VTE prophylaxis; routine discharge education.</li>
                 <li><strong>Moderate (0.15-0.34%):</strong> Consider patient-specific extended prophylaxis; closer follow-up.</li>
                 <li><strong>High (0.35-0.99%):</strong> Extended prophylaxis strongly recommended unless contraindicated.</li>
                 <li><strong>Very High (&ge;1.0%):</strong> Highest risk tier. Extended prophylaxis + early follow-up essential.</li></ul></div>
             <div class="reassessment-box"><h4>Triggered Reassessment</h4>
-                <p style="margin-bottom:8px;"><strong>Switch to "Post-Discharge Update" tab if any post-discharge event occurs:</strong></p>
+                <p style="margin-bottom:8px;"><strong>Switch to "Triggered Reassessment" tab if any post-discharge event occurs:</strong></p>
                 <ul><li><strong>Readmission</strong> for any reason (POD timing matters)</li>
                 <li><strong>Reoperation</strong> for any reason</li>
                 <li>Readmission POD 0-3: OR = 21.8 for PE (rate 2.87% vs baseline 0.170%)</li></ul></div>
@@ -754,7 +755,7 @@
     <!-- TAB 2: UPDATE -->
     <div class="tab-content" id="update">
         <div class="disclaimer">
-            <h3>Post-Discharge Triggered Reassessment Model</h3>
+            <h3>Triggered Reassessment Model</h3>
             <p><strong>Recalculates PE risk after sentinel post-discharge events.</strong> Readmission timing is the single strongest risk signal (OR up to 21.8). Reoperation timing changes risk further.</p>
             <p><strong>Model:</strong> Validated AUC = 0.892 in 2024 temporal validation. Uses the same locked baseline/procedure backbone as the discharge PE model plus readmission and reoperation timing.</p>
             <p><strong>Public-use notice:</strong> This public calculator is intended for educational and clinical decision-support use. Do not enter direct patient identifiers or free-text patient information.</p>
@@ -763,6 +764,7 @@
             <h3>When to use this reassessment model</h3>
             <p>Use this tab only after a <strong>new post-discharge sentinel event</strong>, especially readmission or reoperation. It reassesses the PE estimate after the clinical course changes and should not replace the original discharge calculation. <strong>Do not enter patient identifiers.</strong> <strong>Not FDA-cleared.</strong></p>
         </div>
+        <div class="info-box" style="background-color:#fff3e0;border-left:4px solid #ff8c00;"><h4>Step 2: Triggered Reassessment (After Sentinel Event)</h4><p>This model is used only after a sentinel event — unplanned readmission or reoperation. It reassesses PE risk using the same patient and procedural variables plus sentinel-event timing. <strong>Among patients who experience a sentinel event, 42% cross the 0.5% risk threshold for the first time</strong> — patients who would not have been flagged at discharge. Early readmission (POD 0-3) carries an OR of 21.8 for PE, representing substantial risk amplification.</p></div>
         <form id="update-form" autocomplete="off">
             <div class="section-divider" style="border-top:none;margin-top:0;padding-top:0;">
                 <h3>Patient &amp; Operative Characteristics</h3>
@@ -836,7 +838,8 @@
             </div>
             <div class="info-box"><h4>Interpretation</h4>
                 <p>The reassessment model captures the substantial risk amplification from post-discharge sentinel events. Readmission within POD 0-3 carries an OR of 21.8 for PE.</p>
-                <p style="margin-top:8px;">Patients with early readmission + reoperation represent the highest-risk subgroup and should receive extended prophylaxis unless actively bleeding.</p></div>
+                <p style="margin-top:8px;">Patients with early readmission + reoperation represent the highest-risk subgroup and should receive extended prophylaxis unless actively bleeding.</p>
+                <p style="margin-top:8px;"><strong>Risk reclassification:</strong> Compare this reassessed risk to the original discharge estimate. Patients below the 0.5% threshold at discharge who cross above it after a sentinel event represent newly identified high-risk patients who may benefit from intensified VTE prevention.</p></div>
             <div class="next-step-box" id="upd-next-step">
                 <h4>What to do next</h4>
                 <p id="upd-next-step-text"></p>
@@ -1192,12 +1195,12 @@
             <h3>Clinical Decision Framework</h3>
             <div class="info-box" style="margin-top:0;">
                 <h4>When to Prescribe Extended Prophylaxis After Surgery</h4>
-                <p style="margin-bottom:10px;">Apply this framework after calculating the patient's PE risk using the Discharge or Reassessment tab:</p>
+                <p style="margin-bottom:10px;">Apply this framework after calculating the patient's PE risk using the Discharge or Triggered Reassessment tab:</p>
                 <p><strong>Step 1 &mdash; Risk tier.</strong> If Low (&lt;0.15%), extended prophylaxis is generally not indicated. If Moderate (0.15-0.34%), consider patient-specific factors. If High (&ge;0.35%) or Very High (&ge;1.0%), extended prophylaxis is strongly recommended unless contraindicated.</p>
                 <p style="margin-top:8px;"><strong>Step 2 &mdash; Bleeding assessment.</strong> Review absolute and relative contraindications above. If absolute contraindication present, use mechanical prophylaxis only and reassess daily.</p>
                 <p style="margin-top:8px;"><strong>Step 3 &mdash; Agent selection.</strong> First-line: enoxaparin 40 mg SC daily &times; 28 days (strongest evidence, lowest NNH). If LMWH contraindicated (HIT, refusal of injections): consider rivaroxaban 10 mg PO daily &times; 28-35 days. Avoid apixaban for extended prophylaxis (negative trial).</p>
                 <p style="margin-top:8px;"><strong>Step 4 &mdash; Patient education.</strong> Counsel on injection technique (if LMWH), signs/symptoms of DVT/PE, when to seek emergency care. Arrange 2-week follow-up or phone check-in.</p>
-                <p style="margin-top:8px;"><strong>Step 5 &mdash; Reassess at follow-up.</strong> If readmission or reoperation occurs, return to the Post-Discharge Reassessment tab for recalculated risk and adjust prophylaxis accordingly.</p>
+                <p style="margin-top:8px;"><strong>Step 5 &mdash; Reassess at follow-up.</strong> If readmission or reoperation occurs, return to the Triggered Reassessment tab for recalculated risk and adjust prophylaxis accordingly.</p>
             </div>
         </div>
 
@@ -1211,7 +1214,7 @@
     <div class="tab-content" id="about">
         <div class="info-box" style="margin-top:0;"><h4>Locked Calculator Architecture</h4>
             <p><strong>Discharge tab:</strong> bedside PE, DVT, and composite VTE risk at discharge using clinically available variables, work RVU spline terms, and pooled CPT-3 family. Validated AUCs: PE 0.811, DVT 0.814, VTE 0.811.</p>
-            <p style="margin-top:8px;"><strong>Reassessment tab:</strong> PE-only triggered reassessment using the same baseline/procedure backbone plus readmission timing and reoperation timing. Validated AUC: 0.892.</p></div>
+            <p style="margin-top:8px;"><strong>Triggered Reassessment tab:</strong> PE-only triggered reassessment using the same baseline/procedure backbone plus readmission timing and reoperation timing. Validated AUC: 0.892.</p></div>
         <div class="info-box"><h4>Data Source &amp; Validation</h4><ul>
             <li><strong>Training:</strong> ACS-NSQIP PUF 2020-2023 complete-case cohort (3,864,605 cases)</li>
             <li><strong>Temporal validation:</strong> 2024 complete-case cohort (956,434 cases; 3,413 PE events)</li>
@@ -2137,7 +2140,7 @@ function renderNextStep(prefix, prob) {
         } else if (prob < 0.0035) {
             target.textContent = 'Moderate PE risk. Review procedure complexity, cancer status, mobility, and bleeding risk before discharge. Consider extended prophylaxis discussion if the broader clinical picture feels riskier than the point estimate alone.';
         } else {
-            target.textContent = 'High or very high PE risk. Move to the Extended Prophylaxis tab for practical agent and timing guidance, and arrange explicit follow-up. If the patient is later readmitted or reoperated, recalculate on the Reassessment tab.';
+            target.textContent = 'High or very high PE risk. Move to the Extended Prophylaxis tab for practical agent and timing guidance, and arrange explicit follow-up. If the patient is later readmitted or reoperated, recalculate on the Triggered Reassessment tab.';
         }
         return;
     }
